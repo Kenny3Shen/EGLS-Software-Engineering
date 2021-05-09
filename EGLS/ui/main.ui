@@ -1,0 +1,421 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>897</width>
+    <height>658</height>
+   </rect>
+  </property>
+  <property name="font">
+   <font>
+    <family>Consolas</family>
+    <pointsize>-1</pointsize>
+   </font>
+  </property>
+  <property name="windowTitle">
+   <string>Easy Get Live Streaming</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">*{
+                background-color:rgb(53,53,53);
+                color: rgb(255,255,255);
+                font-size: 15px;
+                font-family:Consolas, 微软雅黑
+                }
+                #roomID{
+                border:1px solid rgb(170, 170, 170);
+                }
+                QMenu{
+                border:.5px solid rgb(150, 150, 150);
+                }
+                #trueLink{
+                font-size: 17px;
+                }
+                #favorites{
+                font-size: 17px;
+                }
+                QMenu::item:selected{
+                background-color:rgb(0, 135, 203);
+                }
+                QComboBox::item:selected{
+                background-color:rgb(0, 135, 203);
+                }
+                QListWidget::item:selected{
+                background-color:rgb(0, 135, 203);
+                }
+                QPushButton:hover{
+                border:1px solid rgb(255, 255, 255);
+                }
+                #trueLink{
+                border:1px solid rgb(0, 0, 0);
+                }
+                QListWidget{
+                border:1px solid rgb(0, 0, 0);
+                }
+                #menubar{
+                border-bottom:.5px solid rgb(150, 150, 150);
+				
+	background-color:rgb(29, 29, 29);
+                }
+            </string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <property name="styleSheet">
+    <string notr="true"/>
+   </property>
+   <layout class="QHBoxLayout" name="horizontalLayout_7">
+    <item>
+     <layout class="QHBoxLayout" name="horizontalLayout_6">
+      <item>
+       <layout class="QVBoxLayout" name="verticalLayout">
+        <item>
+         <layout class="QHBoxLayout" name="horizontalLayout_2" stretch="1,2,1">
+          <property name="spacing">
+           <number>4</number>
+          </property>
+          <item>
+           <widget class="QComboBox" name="platform"/>
+          </item>
+          <item>
+           <widget class="QLineEdit" name="roomID">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="toolTip">
+             <string>Input the live room id</string>
+            </property>
+            <property name="accessibleDescription">
+             <string/>
+            </property>
+            <property name="placeholderText">
+             <string>Room ID</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QComboBox" name="definite">
+            <property name="currentText">
+             <string/>
+            </property>
+            <property name="maxVisibleItems">
+             <number>10</number>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <layout class="QHBoxLayout" name="horizontalLayout_3">
+          <item>
+           <spacer name="horizontalSpacer">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>40</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item>
+           <widget class="QPushButton" name="button">
+            <property name="text">
+             <string>Get</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <spacer name="horizontalSpacer_2">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>40</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item>
+           <widget class="QPushButton" name="addAsx">
+            <property name="styleSheet">
+             <string notr="true">QPushButton
+                                                        {
+                                                        background_color:qlineargradient(spread:pad, x1:0, y1:0, x2:1,
+                                                        y2:0, stop:0 rgba(0, 0, 0, 255), stop:1 rgba(255, 255, 255,
+                                                        255))
+                                                        }
+                                                    </string>
+            </property>
+            <property name="text">
+             <string>Add to Favorites</string>
+            </property>
+            <property name="flat">
+             <bool>false</bool>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <spacer name="horizontalSpacer_4">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>40</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <widget class="QTextBrowser" name="trueLink">
+          <property name="font">
+           <font>
+            <family>Consolas</family>
+            <pointsize>-1</pointsize>
+           </font>
+          </property>
+          <property name="contextMenuPolicy">
+           <enum>Qt::CustomContextMenu</enum>
+          </property>
+          <property name="accessibleDescription">
+           <string>123</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="Line" name="line_5">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <layout class="QHBoxLayout" name="horizontalLayout" stretch="1,2">
+          <item>
+           <widget class="QPushButton" name="potplayer">
+            <property name="toolTip">
+             <string>Open the link</string>
+            </property>
+            <property name="text">
+             <string>Open</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <spacer name="horizontalSpacer_3">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>40</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+         </layout>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <widget class="Line" name="line_4">
+        <property name="orientation">
+         <enum>Qt::Vertical</enum>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <layout class="QVBoxLayout" name="verticalLayout_2">
+        <item>
+         <layout class="QHBoxLayout" name="horizontalLayout_5">
+          <item>
+           <widget class="QLabel" name="label">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+              <horstretch>1</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="text">
+             <string>Favorites</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="myLive">
+            <property name="toolTip">
+             <string>Open all items of favorites</string>
+            </property>
+            <property name="text">
+             <string>Open Favorites</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <widget class="Line" name="line">
+          <property name="orientation">
+           <enum>Qt::Vertical</enum>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="Line" name="line_7">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QListWidget" name="favorites">
+          <property name="font">
+           <font>
+            <family>Consolas</family>
+            <pointsize>-1</pointsize>
+           </font>
+          </property>
+          <property name="mouseTracking">
+           <bool>false</bool>
+          </property>
+          <property name="contextMenuPolicy">
+           <enum>Qt::CustomContextMenu</enum>
+          </property>
+          <property name="accessibleDescription">
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;12345&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="Line" name="line_6">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <layout class="QHBoxLayout" name="horizontalLayout_4">
+          <item>
+           <widget class="QProgressBar" name="progressBar">
+            <property name="enabled">
+             <bool>true</bool>
+            </property>
+            <property name="styleSheet">
+             <string notr="true"/>
+            </property>
+            <property name="value">
+             <number>0</number>
+            </property>
+            <property name="textVisible">
+             <bool>false</bool>
+            </property>
+            <property name="invertedAppearance">
+             <bool>false</bool>
+            </property>
+            <property name="textDirection">
+             <enum>QProgressBar::TopToBottom</enum>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+       </layout>
+      </item>
+     </layout>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>897</width>
+     <height>26</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menuAbout">
+    <property name="title">
+     <string>Setting</string>
+    </property>
+    <addaction name="actionSign_in"/>
+    <addaction name="separator"/>
+    <addaction name="actionNotKeepLogin"/>
+   </widget>
+   <widget class="QMenu" name="menuAbout_2">
+    <property name="title">
+     <string>Help</string>
+    </property>
+    <addaction name="actionReadMe"/>
+    <addaction name="separator"/>
+    <addaction name="actionAbout_us"/>
+   </widget>
+   <widget class="QMenu" name="menuEdit">
+    <property name="title">
+     <string>Edit</string>
+    </property>
+    <addaction name="actionSet_KuaiShou_Cookie"/>
+   </widget>
+   <addaction name="menuEdit"/>
+   <addaction name="menuAbout"/>
+   <addaction name="menuAbout_2"/>
+  </widget>
+  <action name="actionReadMe">
+   <property name="text">
+    <string>Read Me</string>
+   </property>
+  </action>
+  <action name="actionSetKS_Cookies">
+   <property name="text">
+    <string>Set KuaiShou Cookie</string>
+   </property>
+  </action>
+  <action name="actionAbout_us">
+   <property name="text">
+    <string>About us</string>
+   </property>
+  </action>
+  <action name="actionKeep_Login">
+   <property name="text">
+    <string>Keep Login</string>
+   </property>
+  </action>
+  <action name="actionSign_in">
+   <property name="text">
+    <string>Sign in</string>
+   </property>
+  </action>
+  <action name="actionNotKeepLogin">
+   <property name="text">
+    <string>Don't Keep Login</string>
+   </property>
+  </action>
+  <action name="actionNew_Favorites">
+   <property name="text">
+    <string>New Favorites</string>
+   </property>
+  </action>
+  <action name="actionSet_KuaiShou_Cookie">
+   <property name="text">
+    <string>Set KuaiShou Cookie</string>
+   </property>
+  </action>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
