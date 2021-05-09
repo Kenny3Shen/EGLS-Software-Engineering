@@ -128,7 +128,7 @@ margin:3px 10px
        <item>
         <widget class="QCheckBox" name="keepLogin">
          <property name="text">
-          <string>Keep Login</string>
+          <string>Auto-login</string>
          </property>
         </widget>
        </item>

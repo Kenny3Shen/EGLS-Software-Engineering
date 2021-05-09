@@ -353,9 +353,16 @@
     <property name="title">
      <string>Setting</string>
     </property>
+    <widget class="QMenu" name="menuGet_DouyuLink_Method">
+     <property name="title">
+      <string>Get DouyuLink Method</string>
+     </property>
+     <addaction name="actionThird_party_API"/>
+     <addaction name="actionOriginal_API"/>
+    </widget>
     <addaction name="actionSign_in"/>
     <addaction name="separator"/>
-    <addaction name="actionNotKeepLogin"/>
+    <addaction name="menuGet_DouyuLink_Method"/>
    </widget>
    <widget class="QMenu" name="menuAbout_2">
     <property name="title">
@@ -413,6 +420,22 @@
   <action name="actionSet_KuaiShou_Cookie">
    <property name="text">
     <string>Set KuaiShou Cookie</string>
+   </property>
+  </action>
+  <action name="actionOriginal_API">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Original API</string>
+   </property>
+  </action>
+  <action name="actionThird_party_API">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Third-party API</string>
    </property>
   </action>
  </widget>

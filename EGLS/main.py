@@ -19,6 +19,15 @@ from shared_ptr import SP
 
 class MainWindow:
     def __init__(self):
+        ui_file = QFile('ui/main.ui')
+        ui_file.open(QFile.ReadOnly)
+        ui_file.close()
+        self.ui = QUiLoader().load(ui_file)
+
+        # super().__init__()
+        # self.ui = Ui_MainWindow()
+        # self.ui.setupUi(self)
+
         self.definition = ['Blue-Ray', 'Super', 'High', 'Standard']
         self.HuYa_Channel = ['2000p', 'tx', 'bd', 'migu-bd']
         self.DouYin_Channel = ['rtmp', 'hls']
@@ -30,14 +39,6 @@ class MainWindow:
         self.URL_List = []
         self.__initIniSettting()
 
-        ui_file = QFile('ui/main.ui')
-        ui_file.open(QFile.ReadOnly)
-        ui_file.close()
-        self.ui = QUiLoader().load(ui_file)
-
-        # super().__init__()
-        # self.ui = Ui_MainWindow()
-        # self.ui.setupUi(self)
         self.rid, self.quality, self.pf_index = '', 0, 0
         self.openingFavorites = False  # 不能同时多次打开收藏夹
         self.MySignal = MySignal.MySignal()
@@ -46,14 +47,23 @@ class MainWindow:
         self.__setSlot()
         self.__createContextMenu()
 
-    @staticmethod
-    def __initIniSettting():
+    def __initIniSettting(self):
         if not os.path.exists('.setting.ini'):
             ini = QSettings(".setting.ini", QSettings.IniFormat)
             ini.setIniCodec('uft-8')
             ini.setValue('Account/Username', 'None')
             ini.setValue('Account/Password', '')
             ini.setValue('Kuaishou_cookies/KS_Cookies', 'did=web_e9f23e35be2c6eefde872a9296d7a4fa')
+            ini.setValue('DouyuLinkMethod/Method', 'Third')
+            self.ui.actionThird_party_API.toggle()
+        else:
+            ini = QSettings(".setting.ini", QSettings.IniFormat)
+            ini.setIniCodec('uft-8')
+            getMethod = ini.value('DouyuLinkMethod/Method')
+            if getMethod == 'Third':
+                self.ui.actionThird_party_API.toggle()
+            else:
+                self.ui.actionOriginal_API.toggle()
 
     def __isKeepLogin(self):
         ini = QSettings(".setting.ini", QSettings.IniFormat)
@@ -92,6 +102,20 @@ class MainWindow:
         self.MySignal.trueLink_update.connect(self.setTrueLink)
         # self.ui.deleteFav.clicked.connect(self.delItem)
         # self.ui.sign.clicked.connect(self.signIn)
+        self.ui.actionThird_party_API.triggered.connect(self.__setDouyuMethodByThirdAPI)
+        self.ui.actionOriginal_API.triggered.connect(self.__setDouyuMethodByOriginalAPI)
+
+    def __setDouyuMethodByThirdAPI(self):
+        self.ui.actionOriginal_API.toggle()
+        ini = QSettings(".setting.ini", QSettings.IniFormat)
+        ini.setIniCodec('uft-8')
+        ini.setValue('DouyuLinkMethod/Method', 'Third')
+
+    def __setDouyuMethodByOriginalAPI(self):
+        self.ui.actionThird_party_API.toggle()
+        ini = QSettings(".setting.ini", QSettings.IniFormat)
+        ini.setIniCodec('uft-8')
+        ini.setValue('DouyuLinkMethod/Method', 'Origin')
 
     def setItemsText(self, row, status):
         self.ui.favorites.item(row).setText(status)
@@ -184,6 +208,7 @@ class MainWindow:
             else:
                 new = f"{new}(offline)"
             self.MySignal.itemsStatus.emit(self.ui.favorites.currentRow(), new)
+
         # 一个可用于提取直播连接并将其收藏的软件
         oldTitle = re.findall(self.pattern, self.ui.favorites.currentItem().text())[0]
         while True:
@@ -541,7 +566,13 @@ class MainWindow:
 
     def DouYu(self):
         s = DouYuLink.DouYu(self.rid, self.quality)
-        return s.get_Third_API()
+        ini = QSettings(".setting.ini", QSettings.IniFormat)
+        ini.setIniCodec('uft-8')
+        getMethod = ini.value('DouyuLinkMethod/Method')
+        if getMethod == 'Third':
+            return s.get_Third_API()
+        else:
+            return s.get_real_url()
 
     def BiliBili(self):
         b = BiliBiliLink.BiliBili(self.rid, self.quality)
