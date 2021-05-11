@@ -54,13 +54,13 @@ class MainWindow:
             ini.setValue('Account/Username', 'None')
             ini.setValue('Account/Password', '')
             ini.setValue('Kuaishou_cookies/KS_Cookies', 'did=web_e9f23e35be2c6eefde872a9296d7a4fa')
-            ini.setValue('DouyuLinkMethod/Method', 'Third')
+            ini.setValue('DouyuLinkMethod/Method', '0')
             self.ui.actionThird_party_API.toggle()
         else:
             ini = QSettings(".setting.ini", QSettings.IniFormat)
             ini.setIniCodec('uft-8')
             getMethod = ini.value('DouyuLinkMethod/Method')
-            if getMethod == 'Third':
+            if getMethod == '0':
                 self.ui.actionThird_party_API.toggle()
             else:
                 self.ui.actionOriginal_API.toggle()
@@ -109,13 +109,13 @@ class MainWindow:
         self.ui.actionOriginal_API.toggle()
         ini = QSettings(".setting.ini", QSettings.IniFormat)
         ini.setIniCodec('uft-8')
-        ini.setValue('DouyuLinkMethod/Method', 'Third')
+        ini.setValue('DouyuLinkMethod/Method', '0')
 
     def __setDouyuMethodByOriginalAPI(self):
         self.ui.actionThird_party_API.toggle()
         ini = QSettings(".setting.ini", QSettings.IniFormat)
         ini.setIniCodec('uft-8')
-        ini.setValue('DouyuLinkMethod/Method', 'Origin')
+        ini.setValue('DouyuLinkMethod/Method', '1')
 
     def setItemsText(self, row, status):
         self.ui.favorites.item(row).setText(status)
@@ -569,7 +569,7 @@ class MainWindow:
         ini = QSettings(".setting.ini", QSettings.IniFormat)
         ini.setIniCodec('uft-8')
         getMethod = ini.value('DouyuLinkMethod/Method')
-        if getMethod == 'Third':
+        if getMethod == '0':
             return s.get_Third_API()
         else:
             return s.get_real_url()
