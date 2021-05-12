@@ -168,15 +168,15 @@ class MainWindow:
         self.action_getDanmu = self.FavoritesMenu.addAction('Get DanMu')
         self.action_getOriginURL = self.FavoritesMenu.addAction('Open Original Room')
         self.action_delItem = self.FavoritesMenu.addAction('Delete')
-        self.action_refresh = self.FavoritesMenu.addAction('Refresh')
         self.action_rename = self.FavoritesMenu.addAction('Rename')
+        self.action_refresh = self.FavoritesMenu.addAction('Refresh')
         # Associate actions with processing functions by trigger
         self.action_openItem.triggered.connect(self.doubleClickedFavorites)
         self.action_getDanmu.triggered.connect(self.showDanmuWindow)
         self.action_getOriginURL.triggered.connect(self.getOriginURL)
         self.action_delItem.triggered.connect(self.delItem)
-        self.action_refresh.triggered.connect(self.detectStatus)
         self.action_rename.triggered.connect(self.renameItem)
+        self.action_refresh.triggered.connect(self.detectStatus)
         # 创建TextBrowserMenu
         self.TextMenu = QMenu(self.ui.trueLink)
         self.action_copyLink = self.TextMenu.addAction('Copy')
