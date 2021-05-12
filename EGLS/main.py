@@ -13,7 +13,7 @@ import Login
 import MySignal
 # import PreviewLive
 from EGLS_Backend.backend import MySQL
-from link import DouYuLink, AcFunLink, BiliBiliLink, HuYaLink, DouYinLink, KuaiShouLink
+from link import DouYuLink, AcFunLink, BiliBiliLink, HuYaLink, KuaiShouLink
 from shared_ptr import SP
 
 
@@ -30,9 +30,9 @@ class MainWindow:
 
         self.definition = ['Blue-Ray', 'Super', 'High', 'Standard']
         self.HuYa_Channel = ['2000p', 'tx', 'bd', 'migu-bd']
-        self.DouYin_Channel = ['rtmp', 'hls']
-        self.platform = ['DouYu', 'BiliBili', 'AcFun', 'HuYa', 'DouYin', 'KuaiShou']
-        self.LinkList = [self.DouYu, self.BiliBili, self.AcFun, self.HuYa, self.DouYin, self.KuaiShou]
+        # self.DouYin_Channel = ['rtmp', 'hls']
+        self.platform = ['DouYu', 'BiliBili', 'AcFun', 'HuYa', 'KuaiShou']
+        self.LinkList = [self.DouYu, self.BiliBili, self.AcFun, self.HuYa, self.KuaiShou]
         self.originalURL = ['https://www.douyu.com/', 'https://live.bilibili.com/', 'https://live.acfun.cn/live/',
                             'https://www.huya.com/', 'https://v.douyin.com/', 'https://live.kuaishou.com/u/']
         self.pattern = r'^(.*?)\([a-z]{2,3}line\)$'
@@ -164,14 +164,24 @@ class MainWindow:
 
         # Create FavoritesMenu
         self.FavoritesMenu = QMenu(self.ui.favorites)
-        self.action_openItem = self.FavoritesMenu.addAction('Open')
+        self.action_openItem = self.FavoritesMenu.addMenu('Open With Definition')
+        self.action_openWithBlueRay = self.action_openItem.addAction('Blue-Ray')
+        self.action_openWithSuper = self.action_openItem.addAction('Super')
+        self.action_openWithHigh = self.action_openItem.addAction('High')
+        self.action_openWithStandard = self.action_openItem.addAction('Standard')
+
         self.action_getDanmu = self.FavoritesMenu.addAction('Get DanMu')
         self.action_getOriginURL = self.FavoritesMenu.addAction('Open Original Room')
         self.action_delItem = self.FavoritesMenu.addAction('Delete')
         self.action_rename = self.FavoritesMenu.addAction('Rename')
         self.action_refresh = self.FavoritesMenu.addAction('Refresh')
         # Associate actions with processing functions by trigger
-        self.action_openItem.triggered.connect(self.doubleClickedFavorites)
+        # self.action_openItem.triggered.connect(self.doubleClickedFavorites)
+        self.action_openWithBlueRay.triggered.connect(self.__openWithBlueRay)
+        self.action_openWithSuper.triggered.connect(self.__openWithSuper)
+        self.action_openWithHigh.triggered.connect(self.__openWithHigh)
+        self.action_openWithStandard.triggered.connect(self.__openWithStandard)
+
         self.action_getDanmu.triggered.connect(self.showDanmuWindow)
         self.action_getOriginURL.triggered.connect(self.getOriginURL)
         self.action_delItem.triggered.connect(self.delItem)
@@ -196,6 +206,18 @@ class MainWindow:
         # 菜单显示前，将它移动到鼠标点击的位置
         self.FavoritesMenu.move(QCursor().pos())
         self.FavoritesMenu.show()
+
+    def __openWithBlueRay(self):
+        Thread(target=self.openItem, args=((True, 0), )).start()
+
+    def __openWithSuper(self):
+        Thread(target=self.openItem, args=((True, 1), )).start()
+
+    def __openWithHigh(self):
+        Thread(target=self.openItem, args=((True, 2), )).start()
+
+    def __openWithStandard(self):
+        Thread(target=self.openItem, args=((True, 3), )).start()
 
     def renameItem(self):
         def renmae(new, old):
@@ -267,8 +289,8 @@ class MainWindow:
         if not roomInformation:
             QMessageBox.critical(self.ui, 'Warning', 'Invalid Operation')
             return
-        if roomInformation[1] == 4 or roomInformation[1] == 5:
-            QMessageBox.warning(self.ui, 'Warning', 'Not support this platform')
+        if roomInformation[1] == 4:
+            QMessageBox.warning(self.ui, 'Warning', 'Not support this platform yet')
             return
         SP.danmuWindow = DanMu(roomInformation[0], self.platform[roomInformation[1]], roomInformation[2])
         SP.danmuWindow.show()
@@ -309,12 +331,10 @@ class MainWindow:
     def alterDefinition(self):
         self.ui.definite.clear()
         cur_pf_index = self.ui.platform.currentIndex()
-        if cur_pf_index in [0, 1, 2, 5]:
+        if cur_pf_index in [0, 1, 2, 4]:
             self.ui.definite.addItems(self.definition)
         elif cur_pf_index == 3:
             self.ui.definite.addItems(self.HuYa_Channel)
-        elif cur_pf_index == 4:
-            self.ui.definite.addItems(self.DouYin_Channel)
 
     def getURL(self, emit=True):
         res = self.LinkList[self.pf_index]()
@@ -367,7 +387,7 @@ class MainWindow:
     def doubleClickedFavorites(self):
         Thread(target=self.openItem).start()
 
-    def openItem(self):
+    def openItem(self, needchange=(False, 0)):
         title = self.ui.favorites.currentItem().text()
         try:
             title = re.findall(self.pattern, title)[0]
@@ -383,6 +403,8 @@ class MainWindow:
         con.exe()
         data = con.getData()
         _, self.pf_index, self.rid, self.quality, __ = data[0]
+        if needchange[0]:
+            self.quality = needchange[1]
         url = self.getURL()
         if 'http://' in url or 'https://' in url:
             self.MySignal.itemsStatus.emit(self.ui.favorites.currentRow(), f"{title}(online)")
@@ -586,9 +608,9 @@ class MainWindow:
         h = HuYaLink.HuYa(self.rid, self.quality)
         return h.get_real_url()
 
-    def DouYin(self):
-        d = DouYinLink.DouYin(self.rid, self.quality)
-        return d.get_real_url()
+    # def DouYin(self):
+    #     d = DouYinLink.DouYin(self.rid, self.quality)
+    #     return d.get_real_url()
 
     def KuaiShou(self):
         ini = QSettings(".setting.ini", QSettings.IniFormat)
@@ -603,8 +625,6 @@ if __name__ == '__main__':
              "1.选择直播平台，输入房间号，选择清晰度(线路)，点击Get\n" \
              "2.点击PotPlayer打开直播链接（选择PotPlayer为默认打开方式）\n" \
              "3.虎牙平台无法选择清晰度，可选择4种直播线路\n" \
-             "4.抖音平台只有一种清晰度,可选择2种直播线路\n" \
-             "5.使用手机上打开抖音直播间后，选择“分享--复制链接”，输入分享链接中最后7个字符串\n" \
              "例如：v.douyin.com/{room_id}/"
 
     app = QApplication([])

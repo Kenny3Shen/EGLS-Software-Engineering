@@ -4,6 +4,7 @@ import time
 import execjs
 import requests
 
+
 # 获取斗鱼和爱奇艺的直播源，需 JavaScript 环境，可使用 node.js。
 
 
@@ -11,7 +12,7 @@ class DouYu:
 
     def __init__(self, rid, quality):
         # 房间号通常为1~7位纯数字，浏览器地址栏中看到的房间号不一定是真实rid.
-        self.DY_definition = ['8000p', '4000p', '2000p', '1200p']
+        self.DY_definition = ['', '4000p', '2000p', '1200p']
         self.did = '10000000000000000000000000001501'
         self.t10 = str(int(time.time()))
         self.t13 = str(int((time.time() * 1000)))
@@ -112,10 +113,12 @@ class DouYu:
             patten = r'\/([0-9].*?)[_.]'
             ID = re.search(patten, stream).group(0)
             if ID[-1] == '.':  # replay
-                true_link = f'http://tx2play1.douyucdn.cn/live{ID}flv?uuid='
+                trueLink = f'http://tx2play1.douyucdn.cn/live{ID}flv?uuid='
+            elif self.quality == 0:
+                trueLink = f'http://tx2play1.douyucdn.cn/live{ID[:-1]}.flv?uuid='
             else:
-                true_link = f'http://tx2play1.douyucdn.cn/live{ID}{self.DY_definition[self.quality]}.flv?uuid='
-            return true_link
+                trueLink = f'http://tx2play1.douyucdn.cn/live{ID}{self.DY_definition[self.quality]}.flv?uuid='
+            return trueLink
         elif js['state'] == 'NO':
             return 'Live is offline'
         else:
@@ -133,7 +136,11 @@ class DouYu:
             return 'Live is offline'
         else:
             key = self.get_js()
-        return f"http://tx2play1.douyucdn.cn/live/{key}_{self.DY_definition[self.quality]}.flv?uuid="
+        if self.quality == 0:
+            trueLink = f"http://tx2play1.douyucdn.cn/live/{key}.flv?uuid="
+        else:
+            trueLink = f"http://tx2play1.douyucdn.cn/live/{key}_{self.DY_definition[self.quality]}.flv?uuid="
+        return trueLink
 
 
 if __name__ == '__main__':
