@@ -29,7 +29,7 @@ class MainWindow:
         # self.ui.setupUi(self)
 
         self.definition = ['Blue-Ray', 'Super', 'High', 'Standard']
-        self.HuYa_Channel = ['2000p', 'tx', 'bd', 'migu-bd']
+        # self.HuYa_Channel = ['2000p', 'tx', 'bd', 'migu-bd']
         # self.DouYin_Channel = ['rtmp', 'hls']
         self.platform = ['DouYu', 'BiliBili', 'AcFun', 'HuYa', 'KuaiShou']
         self.LinkList = [self.DouYu, self.BiliBili, self.AcFun, self.HuYa, self.KuaiShou]
@@ -95,7 +95,7 @@ class MainWindow:
         self.ui.myLive.clicked.connect(self.openFavorites)
         self.ui.favorites.itemDoubleClicked.connect(self.doubleClickedFavorites)
         # self.ui.favorites.itemEntered.connect(lambda: self.ui.favorites.currentItem().setToolTip('123'))
-        self.ui.platform.currentIndexChanged.connect(self.alterDefinition)
+        # self.ui.platform.currentIndexChanged.connect(self.alterDefinition)
         # self.ui.detect.clicked.connect(self.detectStatus)
         self.MySignal.itemsStatus.connect(self.setItemsText)
         self.MySignal.progress_update.connect(self.setProgressBar)
@@ -164,7 +164,7 @@ class MainWindow:
 
         # Create FavoritesMenu
         self.FavoritesMenu = QMenu(self.ui.favorites)
-        self.action_openItem = self.FavoritesMenu.addMenu('Open With Definition')
+        self.action_openItem = self.FavoritesMenu.addMenu('Open With Quality As')
         self.action_openWithBlueRay = self.action_openItem.addAction('Blue-Ray')
         self.action_openWithSuper = self.action_openItem.addAction('Super')
         self.action_openWithHigh = self.action_openItem.addAction('High')
@@ -328,13 +328,13 @@ class MainWindow:
     def setQuality(self):
         self.quality = self.ui.definite.currentIndex()
 
-    def alterDefinition(self):
-        self.ui.definite.clear()
-        cur_pf_index = self.ui.platform.currentIndex()
-        if cur_pf_index in [0, 1, 2, 4]:
-            self.ui.definite.addItems(self.definition)
-        elif cur_pf_index == 3:
-            self.ui.definite.addItems(self.HuYa_Channel)
+    # def alterDefinition(self):
+    #     self.ui.definite.clear()
+    #     cur_pf_index = self.ui.platform.currentIndex()
+    #     if cur_pf_index in [0, 1, 2, 4]:
+    #         self.ui.definite.addItems(self.definition)
+    #     elif cur_pf_index == 3:
+    #         self.ui.definite.addItems(self.HuYa_Channel)
 
     def getURL(self, emit=True):
         res = self.LinkList[self.pf_index]()

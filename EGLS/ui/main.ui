@@ -363,6 +363,7 @@
     <addaction name="actionSign_in"/>
     <addaction name="separator"/>
     <addaction name="menuGet_DouyuLink_Method"/>
+    <addaction name="separator"/>
    </widget>
    <widget class="QMenu" name="menuAbout_2">
     <property name="title">
@@ -442,6 +443,35 @@
    </property>
    <property name="text">
     <string>Third-party API</string>
+   </property>
+  </action>
+  <action name="action2000p">
+   <property name="text">
+    <string>2000p</string>
+   </property>
+  </action>
+  <action name="actiontx">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>tx</string>
+   </property>
+  </action>
+  <action name="actionbd">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>bd</string>
+   </property>
+  </action>
+  <action name="actionmigu_bd">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>migu-bd</string>
    </property>
   </action>
  </widget>

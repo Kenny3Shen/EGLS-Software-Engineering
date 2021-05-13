@@ -4,8 +4,8 @@ import base64
 import urllib.parse
 import hashlib
 import time
-# TODO
-HuYa_Channel = ['2000p', 'tx', 'bd', 'migu-bd']
+
+HuYa_Quality = ['', '_4000', '_2000', '_1200']
 
 
 class HuYa:
@@ -30,23 +30,14 @@ class HuYa:
             if liveLineUrl:
                 if 'replay' in liveLineUrl:
                     isReplay = True
-                    real_url = {
-                        'replay': "https:" + liveLineUrl,
-                    }
+                    real_url = f"https:{self.live(liveLineUrl)}"
                 else:
-                    s_url = self.live(liveLineUrl)
-                    b_url = self.live(liveLineUrl.replace('_2000', ''))
-                    real_url = {
-                        '2000p': "https:" + s_url,
-                        'tx': "https:" + b_url,
-                        'bd': "https:" + b_url.replace('tx.hls.huya.com', 'bd.hls.huya.com'),
-                        'migu-bd': "https:" + b_url.replace('tx.hls.huya.com', 'migu-bd.hls.huya.com'),
-                    }
-
+                    real_url = f"https:{self.live(liveLineUrl)}"
                 if not isReplay:
-                    return real_url[HuYa_Channel[self.quality]]
+                    r = re.sub('.m3u8', f'{HuYa_Quality[self.quality]}.m3u8', real_url)
+                    return r
                 else:
-                    return real_url['replay']
+                    return real_url
             else:
                 return 'Live streaming not found or room not exist'
         except Exception:
@@ -75,5 +66,5 @@ class HuYa:
 
 if __name__ == '__main__':
     room = input('输入虎牙直播房间号：\n')
-    hy = HuYa(room, 0)
+    hy = HuYa(room, 1)
     print(hy.get_real_url())
