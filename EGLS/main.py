@@ -55,15 +55,20 @@ class MainWindow:
             ini.setValue('Account/Password', '')
             ini.setValue('Kuaishou_cookies/KS_Cookies', 'did=web_e9f23e35be2c6eefde872a9296d7a4fa')
             ini.setValue('DouyuLinkMethod/Method', '0')
+            ini.setValue('OpenLinkWithDanmu/Choose', '0')
+            self.ui.actionTrue.toggle()
             self.ui.actionThird_party_API.toggle()
         else:
             ini = QSettings(".setting.ini", QSettings.IniFormat)
             ini.setIniCodec('uft-8')
-            getMethod = ini.value('DouyuLinkMethod/Method')
-            if getMethod == '0':
+            if ini.value('DouyuLinkMethod/Method') == '0':
                 self.ui.actionThird_party_API.toggle()
             else:
                 self.ui.actionOriginal_API.toggle()
+            if ini.value('OpenLinkWithDanmu/Choose') == '0':
+                self.ui.actionFalse.toggle()
+            else:
+                self.ui.actionTrue.toggle()
 
     def __isKeepLogin(self):
         ini = QSettings(".setting.ini", QSettings.IniFormat)
@@ -104,6 +109,20 @@ class MainWindow:
         # self.ui.sign.clicked.connect(self.signIn)
         self.ui.actionThird_party_API.triggered.connect(self.__setDouyuMethodByThirdAPI)
         self.ui.actionOriginal_API.triggered.connect(self.__setDouyuMethodByOriginalAPI)
+        self.ui.actionTrue.triggered.connect(self.__setOpenLinkWithDanmuTrue)
+        self.ui.actionFalse.triggered.connect(self.__setOpenLinkWithDanmuFalse)
+
+    def __setOpenLinkWithDanmuTrue(self):
+        self.ui.actionFalse.toggle()
+        ini = QSettings(".setting.ini", QSettings.IniFormat)
+        ini.setIniCodec('uft-8')
+        ini.setValue('OpenLinkWithDanmu/Choose', '1')
+
+    def __setOpenLinkWithDanmuFalse(self):
+        self.ui.actionTrue.toggle()
+        ini = QSettings(".setting.ini", QSettings.IniFormat)
+        ini.setIniCodec('uft-8')
+        ini.setValue('OpenLinkWithDanmu/Choose', '0')
 
     def __setDouyuMethodByThirdAPI(self):
         self.ui.actionOriginal_API.toggle()
@@ -117,43 +136,32 @@ class MainWindow:
         ini.setIniCodec('uft-8')
         ini.setValue('DouyuLinkMethod/Method', '1')
 
+    def setTrueLink(self, link):
+        self.ui.trueLink.setPlainText(link)
+
+    def setRoomID(self):
+        self.rid = self.ui.roomID.text()
+
+    def setPlatform(self):
+        self.pf_index = self.ui.platform.currentIndex()
+
+    def setProgressBar(self, value):
+        self.ui.progressBar.setValue(value)
+
+    def setKuaiShouCookies(self):
+        cookie, okPressed = QInputDialog.getText(self.ui, "Input your cookie", "Cookie:", QLineEdit.Normal, "")
+        if not okPressed:
+            pass
+        else:
+            ini = QSettings(".setting.ini", QSettings.IniFormat)
+            ini.setIniCodec('uft-8')
+            ini.setValue('Kuaishou_cookies/KS_Cookies', cookie)
+
+    def setQuality(self):
+        self.quality = self.ui.definite.currentIndex()
+
     def setItemsText(self, row, status):
         self.ui.favorites.item(row).setText(status)
-
-    def detectStatus(self):
-        itemCount = self.ui.favorites.count()
-        if itemCount == 0:
-            QMessageBox.information(self.ui, 'Notice', 'Empty favorties')
-            return
-        else:
-            if self.openingFavorites:
-                QMessageBox.warning(self.ui, 'Warning', 'Task in progress, please wait for completion')
-                return
-            self.openingFavorites = True
-            Thread(target=self.detect).start()
-            self.openingFavorites = False
-
-    def detect(self):
-        # con = pymysql.connect(host="localhost", user="root", password="kr20000118", database="UserLink")
-        con = MySQL(database='User', sql=f"SELECT * FROM {self.user}")
-        con.exe()
-        data = con.getData()
-        row = 0
-        for i in data:
-            thread = Thread(target=self.detechItemStatus, args=(row, i))
-            row += 1
-            thread.setDaemon(True)
-            thread.start()
-
-    def detechItemStatus(self, row, info, append_list=False):
-        title, self.pf_index, self.rid, self.quality, ID = info
-        url = self.getURL(emit=False)
-        if 'http://' not in url and 'https://' not in url:
-            self.MySignal.itemsStatus.emit(row, f"{title}(offline)")
-        else:
-            self.MySignal.itemsStatus.emit(row, f"{title}(online)")
-        if append_list:
-            self.URL_List.append((title, url, ID))
 
     def __createContextMenu(self):
         # 创建右键菜单
@@ -208,16 +216,16 @@ class MainWindow:
         self.FavoritesMenu.show()
 
     def __openWithBlueRay(self):
-        Thread(target=self.openItem, args=((True, 0), )).start()
+        Thread(target=self.openItem, args=((True, 0),)).start()
 
     def __openWithSuper(self):
-        Thread(target=self.openItem, args=((True, 1), )).start()
+        Thread(target=self.openItem, args=((True, 1),)).start()
 
     def __openWithHigh(self):
-        Thread(target=self.openItem, args=((True, 2), )).start()
+        Thread(target=self.openItem, args=((True, 2),)).start()
 
     def __openWithStandard(self):
-        Thread(target=self.openItem, args=((True, 3), )).start()
+        Thread(target=self.openItem, args=((True, 3),)).start()
 
     def renameItem(self):
         def renmae(new, old):
@@ -231,7 +239,6 @@ class MainWindow:
                 new = f"{new}(offline)"
             self.MySignal.itemsStatus.emit(self.ui.favorites.currentRow(), new)
 
-        # 一个可用于提取直播连接并将其收藏的软件
         oldTitle = re.findall(self.pattern, self.ui.favorites.currentItem().text())[0]
         while True:
             newTitle, submit = QInputDialog.getText(self.ui, "Input new title", "title:", QLineEdit.Normal, "")
@@ -304,30 +311,6 @@ class MainWindow:
     #     SP.previewWindow = PreviewLive.Preview(url)
     #     SP.previewWindow.show()
 
-    def setTrueLink(self, link):
-        self.ui.trueLink.setPlainText(link)
-
-    def setRoomID(self):
-        self.rid = self.ui.roomID.text()
-
-    def setPlatform(self):
-        self.pf_index = self.ui.platform.currentIndex()
-
-    def setProgressBar(self, value):
-        self.ui.progressBar.setValue(value)
-
-    def setKuaiShouCookies(self):
-        cookie, okPressed = QInputDialog.getText(self.ui, "Input your cookie", "Cookie:", QLineEdit.Normal, "")
-        if not okPressed:
-            pass
-        else:
-            ini = QSettings(".setting.ini", QSettings.IniFormat)
-            ini.setIniCodec('uft-8')
-            ini.setValue('Kuaishou_cookies/KS_Cookies', cookie)
-
-    def setQuality(self):
-        self.quality = self.ui.definite.currentIndex()
-
     # def alterDefinition(self):
     #     self.ui.definite.clear()
     #     cur_pf_index = self.ui.platform.currentIndex()
@@ -384,6 +367,41 @@ class MainWindow:
                 #     'action': 'signout',
                 # })
 
+    def detectStatus(self):
+        itemCount = self.ui.favorites.count()
+        if itemCount == 0:
+            QMessageBox.information(self.ui, 'Notice', 'Empty favorties')
+            return
+        else:
+            if self.openingFavorites:
+                QMessageBox.warning(self.ui, 'Warning', 'Task in progress, please wait for completion')
+                return
+            self.openingFavorites = True
+            Thread(target=self.detect).start()
+            self.openingFavorites = False
+
+    def detect(self):
+        # con = pymysql.connect(host="localhost", user="root", password="kr20000118", database="UserLink")
+        con = MySQL(database='User', sql=f"SELECT * FROM {self.user}")
+        con.exe()
+        data = con.getData()
+        row = 0
+        for i in data:
+            thread = Thread(target=self.detechItemStatus, args=(row, i))
+            row += 1
+            thread.setDaemon(True)
+            thread.start()
+
+    def detechItemStatus(self, row, info, append_list=False):
+        title, self.pf_index, self.rid, self.quality, ID = info
+        url = self.getURL(emit=False)
+        if 'http://' not in url and 'https://' not in url:
+            self.MySignal.itemsStatus.emit(row, f"{title}(offline)")
+        else:
+            self.MySignal.itemsStatus.emit(row, f"{title}(online)")
+        if append_list:
+            self.URL_List.append((title, url, ID))
+
     def doubleClickedFavorites(self):
         Thread(target=self.openItem).start()
 
@@ -412,6 +430,8 @@ class MainWindow:
                 f.write('<asx version = "3.0" >')
                 f.write(f'<entry><title>{title}</title><ref href = "{url}"/></entry>')
             os.startfile('TemporaryFile.asx')
+            if QSettings(".setting.ini", QSettings.IniFormat).value('OpenLinkWithDanmu/Choose') == '1':
+                self.action_getDanmu.trigger()
             #  self.progressSignal.trueLink_update.emit(f"Opening \"{title}\"")
         else:
             self.MySignal.itemsStatus.emit(self.ui.favorites.currentRow(), f"{title}(offline)")
@@ -622,10 +642,8 @@ class MainWindow:
 
 if __name__ == '__main__':
     readMe = "0.请先下载PotPlayer（或任意可打开直播链接的播放器）\n" \
-             "1.选择直播平台，输入房间号，选择清晰度(线路)，点击Get\n" \
-             "2.点击PotPlayer打开直播链接（选择PotPlayer为默认打开方式）\n" \
-             "3.虎牙平台无法选择清晰度，可选择4种直播线路\n" \
-             "例如：v.douyin.com/{room_id}/"
+             "1.选择直播平台，输入房间号，选择清晰度，点击Get\n" \
+             "2.点击PotPlayer打开直播链接（选择PotPlayer为默认打开方式）\n"
 
     app = QApplication([])
     app.setStyle('Fusion')

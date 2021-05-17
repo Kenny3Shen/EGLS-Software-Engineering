@@ -360,10 +360,18 @@
      <addaction name="actionThird_party_API"/>
      <addaction name="actionOriginal_API"/>
     </widget>
+    <widget class="QMenu" name="menuOLWD">
+     <property name="title">
+      <string>Open Live With Danmu</string>
+     </property>
+     <addaction name="actionTrue"/>
+     <addaction name="actionFalse"/>
+    </widget>
     <addaction name="actionSign_in"/>
     <addaction name="separator"/>
     <addaction name="menuGet_DouyuLink_Method"/>
     <addaction name="separator"/>
+    <addaction name="menuOLWD"/>
    </widget>
    <widget class="QMenu" name="menuAbout_2">
     <property name="title">
@@ -472,6 +480,22 @@
    </property>
    <property name="text">
     <string>migu-bd</string>
+   </property>
+  </action>
+  <action name="actionTrue">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>True</string>
+   </property>
+  </action>
+  <action name="actionFalse">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>False</string>
    </property>
   </action>
  </widget>
