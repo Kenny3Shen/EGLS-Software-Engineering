@@ -357,15 +357,15 @@
      <property name="title">
       <string>Get DouyuLink Method</string>
      </property>
-     <addaction name="actionThird_party_API"/>
      <addaction name="actionOriginal_API"/>
+     <addaction name="actionThird_party_API"/>
     </widget>
     <widget class="QMenu" name="menuOLWD">
      <property name="title">
       <string>Open Live With Danmu</string>
      </property>
-     <addaction name="actionTrue"/>
      <addaction name="actionFalse"/>
+     <addaction name="actionTrue"/>
     </widget>
     <addaction name="actionSign_in"/>
     <addaction name="separator"/>
@@ -380,6 +380,8 @@
     <addaction name="actionReadMe"/>
     <addaction name="separator"/>
     <addaction name="actionAbout_us"/>
+    <addaction name="separator"/>
+    <addaction name="actionReset_Password"/>
    </widget>
    <widget class="QMenu" name="menuEdit">
     <property name="title">
@@ -496,6 +498,14 @@
    </property>
    <property name="text">
     <string>False</string>
+   </property>
+  </action>
+  <action name="actionReset_Password">
+   <property name="text">
+    <string>Reset Password</string>
+   </property>
+   <property name="visible">
+    <bool>false</bool>
    </property>
   </action>
  </widget>

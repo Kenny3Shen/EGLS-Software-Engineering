@@ -6,11 +6,12 @@ from threading import Thread
 from PySide2.QtCore import QFile, QSettings
 from PySide2.QtGui import QIcon, QCursor
 from PySide2.QtUiTools import QUiLoader
-from PySide2.QtWidgets import QApplication, QMessageBox, QInputDialog, QLineEdit, QMenu
+from PySide2.QtWidgets import QApplication, QMessageBox, QInputDialog, QLineEdit, QMenu, QFileDialog
 
 from DanMu import DanMu
 import Login
 import MySignal
+import resetPwd
 # import PreviewLive
 from EGLS_Backend.backend import MySQL
 from link import DouYuLink, AcFunLink, BiliBiliLink, HuYaLink, KuaiShouLink
@@ -54,10 +55,23 @@ class MainWindow:
             ini.setValue('Account/Username', 'None')
             ini.setValue('Account/Password', '')
             ini.setValue('Kuaishou_cookies/KS_Cookies', 'did=web_e9f23e35be2c6eefde872a9296d7a4fa')
-            ini.setValue('DouyuLinkMethod/Method', '0')
-            ini.setValue('OpenLinkWithDanmu/Choose', '0')
+            ini.setValue('DouyuLinkMethod/Method', '1')
+            ini.setValue('OpenLinkWithDanmu/Choose', '1')
             self.ui.actionTrue.toggle()
-            self.ui.actionThird_party_API.toggle()
+            self.ui.actionOriginal_API.toggle()
+            if QMessageBox.question(self.ui, 'Confirm',
+                                    'We found that you are using this software for the first time. '
+                                    'We recommend that you set the opening method of the .axs file to Potplayer '
+                                    'or other similar media players.') == QMessageBox.Yes:
+                with open('TemporaryFile.asx', 'w') as f:
+                    f.write('<asx version = "3.0" >')
+                    f.write(f'<entry><title>Set the opening method of this file</title><ref href = ""/></entry>')
+                QFileDialog.getOpenFileName(
+                    self.ui,  # 父窗口对象
+                    "Set the opening method",  # 标题
+                    ".",  # 起始目录
+                    "Type(*.asx)"  # 选择类型过滤项，过滤内容在括号中
+                )
         else:
             ini = QSettings(".setting.ini", QSettings.IniFormat)
             ini.setIniCodec('uft-8')
@@ -81,6 +95,7 @@ class MainWindow:
             self.user = user
             self.ui.actionSign_in.setText('Sign out')
             self.ui.trueLink.setPlainText(f'Hello, {self.user}!')
+            self.ui.actionReset_Password.setVisible(True)
             for i in data:
                 self.ui.favorites.addItem(i[0])
             Thread(target=self.detect).start()
@@ -99,6 +114,7 @@ class MainWindow:
         self.ui.potplayer.clicked.connect(self.openWithPotplayer)
         self.ui.myLive.clicked.connect(self.openFavorites)
         self.ui.favorites.itemDoubleClicked.connect(self.doubleClickedFavorites)
+        self.ui.actionReset_Password.triggered.connect(self.resetPassword)
         # self.ui.favorites.itemEntered.connect(lambda: self.ui.favorites.currentItem().setToolTip('123'))
         # self.ui.platform.currentIndexChanged.connect(self.alterDefinition)
         # self.ui.detect.clicked.connect(self.detectStatus)
@@ -149,7 +165,8 @@ class MainWindow:
         self.ui.progressBar.setValue(value)
 
     def setKuaiShouCookies(self):
-        cookie, okPressed = QInputDialog.getText(self.ui, "Input your cookie", "Cookie:", QLineEdit.Normal, "")
+        cookie, okPressed = QInputDialog.getText(self.ui, "Input Your Cookie", "Cookie:", QLineEdit.Normal,
+                                                 "did=web_e9f23e35be2c6eefde872a9296d7a4fa")
         if not okPressed:
             pass
         else:
@@ -162,6 +179,10 @@ class MainWindow:
 
     def setItemsText(self, row, status):
         self.ui.favorites.item(row).setText(status)
+
+    def resetPassword(self):
+        SP.resetPwdWindow = resetPwd.ResetPwd(self.user)
+        SP.resetPwdWindow.show()
 
     def __createContextMenu(self):
         # 创建右键菜单
@@ -346,11 +367,11 @@ class MainWindow:
             self.MySignal.trueLink_update.emit(res)
         return res
 
-    def signHandler(self):
-        def clearFavorites():
-            for _ in range(self.ui.favorites.count()):
-                self.ui.favorites.takeItem(0)
+    def clearFavorites(self):
+        for _ in range(self.ui.favorites.count()):
+            self.ui.favorites.takeItem(0)
 
+    def signHandler(self):
         if self.user == 'None':
             SP.loginWindow = Login.Login()
             SP.loginWindow.ui.show()
@@ -360,7 +381,8 @@ class MainWindow:
                 self.ui.actionSign_in.setText('Sign in')
                 self.ui.trueLink.setPlainText("")
                 self.ui.progressBar.setValue(0)
-                thread = Thread(target=clearFavorites)
+                self.ui.actionReset_Password.setVisible(False)
+                thread = Thread(target=self.clearFavorites)
                 thread.start()
                 # url = 'http://127.0.0.1/api/sign'
                 # requests.Session().post(url, json={
@@ -394,13 +416,17 @@ class MainWindow:
 
     def detechItemStatus(self, row, info, append_list=False):
         title, self.pf_index, self.rid, self.quality, ID = info
-        url = self.getURL(emit=False)
-        if 'http://' not in url and 'https://' not in url:
+        try:
+            url = self.getURL(emit=False)
+        except:
             self.MySignal.itemsStatus.emit(row, f"{title}(offline)")
         else:
-            self.MySignal.itemsStatus.emit(row, f"{title}(online)")
-        if append_list:
-            self.URL_List.append((title, url, ID))
+            if 'http://' not in url and 'https://' not in url:
+                self.MySignal.itemsStatus.emit(row, f"{title}(offline)")
+            else:
+                self.MySignal.itemsStatus.emit(row, f"{title}(online)")
+            if append_list:
+                self.URL_List.append((title, url, ID))
 
     def doubleClickedFavorites(self):
         Thread(target=self.openItem).start()

@@ -49,11 +49,17 @@
                 }
             </string>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout_3">
+  <layout class="QHBoxLayout" name="horizontalLayout_5">
    <item>
     <layout class="QVBoxLayout" name="verticalLayout_2" stretch="2,4,1">
      <item>
       <widget class="QLabel" name="label">
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>0</height>
+        </size>
+       </property>
        <property name="font">
         <font>
          <family>Consolas</family>
@@ -64,7 +70,7 @@
         <string notr="true">font-size:30px</string>
        </property>
        <property name="text">
-        <string>           Register</string>
+        <string>        Reset Password</string>
        </property>
       </widget>
      </item>
@@ -75,17 +81,24 @@
          <item>
           <widget class="QLabel" name="label_2">
            <property name="text">
-            <string>Username:   </string>
+            <string>Your Password:</string>
            </property>
           </widget>
          </item>
          <item>
-          <widget class="QLineEdit" name="username"/>
+          <widget class="QLineEdit" name="pwd">
+           <property name="inputMethodHints">
+            <set>Qt::ImhHiddenText|Qt::ImhNoAutoUppercase|Qt::ImhNoPredictiveText|Qt::ImhSensitiveData</set>
+           </property>
+           <property name="echoMode">
+            <enum>QLineEdit::Password</enum>
+           </property>
+          </widget>
          </item>
         </layout>
        </item>
        <item>
-        <widget class="QLabel" name="usernameTips">
+        <widget class="QLabel" name="nowPwdTips">
          <property name="styleSheet">
           <string notr="true">color:red;
 	font-size:16px</string>
@@ -100,12 +113,12 @@
          <item>
           <widget class="QLabel" name="label_3">
            <property name="text">
-            <string>Password:   </string>
+            <string>New Password: </string>
            </property>
           </widget>
          </item>
          <item>
-          <widget class="QLineEdit" name="pwd">
+          <widget class="QLineEdit" name="newPwd">
            <property name="echoMode">
             <enum>QLineEdit::Password</enum>
            </property>
@@ -129,7 +142,7 @@ font-size:16px</string>
          <item>
           <widget class="QLabel" name="label_4">
            <property name="text">
-            <string>Re-password:</string>
+            <string>Re-password:  </string>
            </property>
           </widget>
          </item>
@@ -171,7 +184,7 @@ font-size:16px</string>
         </spacer>
        </item>
        <item>
-        <widget class="QPushButton" name="submit">
+        <widget class="QPushButton" name="reset">
          <property name="enabled">
           <bool>true</bool>
          </property>
@@ -182,7 +195,7 @@ font-size:16px</string>
           </sizepolicy>
          </property>
          <property name="text">
-          <string>Submit</string>
+          <string>Reset</string>
          </property>
          <property name="iconSize">
           <size>

@@ -96,6 +96,7 @@ class Login:
                 ini.setValue('Account/Password', '')
             SP.mainWindow.ui.actionSign_in.setText('Sign out')
             SP.mainWindow.ui.trueLink.setPlainText(f'Hello, {self.username}!')
+            SP.mainWindow.ui.actionReset_Password.setVisible(True)
             Thread(target=self.loadFavorites).start()
             self.ui.close()
 

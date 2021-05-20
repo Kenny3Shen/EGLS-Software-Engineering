@@ -4,3 +4,4 @@ class SP:
     previewWindow = None
     danmuWindow = None
     registerWindow = None
+    resetPwdWindow = None
