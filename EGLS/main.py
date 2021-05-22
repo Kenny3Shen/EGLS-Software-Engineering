@@ -60,18 +60,10 @@ class MainWindow:
             self.ui.actionTrue.toggle()
             self.ui.actionOriginal_API.toggle()
             if QMessageBox.question(self.ui, 'Confirm',
-                                    'We found that you are using this software for the first time. '
-                                    'We recommend that you set the opening method of the .axs file to Potplayer '
+                                    'We found that you are using this software for the first time and therefore '
+                                    'we recommend you to set the opening method of the .asx file to Potplayer '
                                     'or other similar media players.') == QMessageBox.Yes:
-                with open('TemporaryFile.asx', 'w') as f:
-                    f.write('<asx version = "3.0" >')
-                    f.write(f'<entry><title>Set the opening method of this file</title><ref href = ""/></entry>')
-                QFileDialog.getOpenFileName(
-                    self.ui,  # 父窗口对象
-                    "Set the opening method",  # 标题
-                    ".",  # 起始目录
-                    "Type(*.asx)"  # 选择类型过滤项，过滤内容在括号中
-                )
+                self.__setOpenMethod()
         else:
             ini = QSettings(".setting.ini", QSettings.IniFormat)
             ini.setIniCodec('uft-8')
@@ -100,6 +92,18 @@ class MainWindow:
                 self.ui.favorites.addItem(i[0])
             Thread(target=self.detect).start()
 
+    def __setOpenMethod(self):
+        with open('set this file.asx', 'w') as f:
+            f.write('<asx version = "3.0" >')
+            f.write(f'<entry><title>TemporaryFile</title>'
+                    f'<ref href = "http://tx2play1.douyucdn.cn/live/3637778raLSXdOdu.flv?uuid="/></entry>')
+        QFileDialog.getOpenFileName(
+            self.ui,  # 父窗口对象
+            "Set the opening method",  # 标题
+            ".",  # 起始目录
+            "Type(*.asx)"  # 选择类型过滤项，过滤内容在括号中
+        )
+
     def __setSlot(self):
         self.ui.actionSign_in.triggered.connect(self.signHandler)
         self.ui.actionReadMe.triggered.connect(lambda: self.ui.trueLink.setPlainText(readMe))
@@ -127,6 +131,8 @@ class MainWindow:
         self.ui.actionOriginal_API.triggered.connect(self.__setDouyuMethodByOriginalAPI)
         self.ui.actionTrue.triggered.connect(self.__setOpenLinkWithDanmuTrue)
         self.ui.actionFalse.triggered.connect(self.__setOpenLinkWithDanmuFalse)
+        self.ui.actionSet_Open_Method.triggered.connect(self.__setOpenMethod)
+        self.ui.actionUpdate_Log.triggered.connect(self.__setUpdateLog)
 
     def __setOpenLinkWithDanmuTrue(self):
         self.ui.actionFalse.toggle()
@@ -151,6 +157,10 @@ class MainWindow:
         ini = QSettings(".setting.ini", QSettings.IniFormat)
         ini.setIniCodec('uft-8')
         ini.setValue('DouyuLinkMethod/Method', '1')
+
+    def __setUpdateLog(self):
+        markdown = open('../README.md', encoding='utf-8').read()
+        self.ui.trueLink.setMarkdown(markdown)
 
     def setTrueLink(self, link):
         self.ui.trueLink.setPlainText(link)
@@ -667,9 +677,7 @@ class MainWindow:
 
 
 if __name__ == '__main__':
-    readMe = "0.请先下载PotPlayer（或任意可打开直播链接的播放器）\n" \
-             "1.选择直播平台，输入房间号，选择清晰度，点击Get\n" \
-             "2.点击PotPlayer打开直播链接（选择PotPlayer为默认打开方式）\n"
+    readMe = 'readme'
 
     app = QApplication([])
     app.setStyle('Fusion')
@@ -679,3 +687,5 @@ if __name__ == '__main__':
     app.exec_()
     if os.path.exists('TemporaryFile.asx'):
         os.remove('TemporaryFile.asx')
+    if os.path.exists('set this file.asx'):
+        os.remove('set this file.asx')
