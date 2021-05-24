@@ -14,8 +14,10 @@ class Register(QWidget):
         self.ui.repwd.returnPressed.connect(self.submit)
         self.username_pattern = r"^[A-za-z0-9_]{5,15}$"
         # Minimum 5 characters and maximum 15 characters, only digital, English letters and _
+        # 最少5个字符，最多15个字符，仅数字，英文字母和_
         self.pwd_pattern = r"^(?=.*?[a-z])(?=.*?[0-9]).{8,15}$"
         # Minimum 8 characters and maximum 15 characters, at least one lower case English letter, one digital
+        # 最少8个字符，最多15个字符，至少一个小写英文字母，一个数字
 
     def submit(self):
         self.ui.usernameTips.clear()
@@ -43,7 +45,8 @@ class Register(QWidget):
         self.newUser(username, pwd.encode())
 
     def newUser(self, username, password):
-        create_newUser = f"INSERT INTO Userdata (Username, Password) VALUES ('{username}', '{hashlib.md5(password).hexdigest()}')"
+        create_newUser = f"INSERT INTO Userdata (Username, Password) " \
+                         f"VALUES ('{username}', '{hashlib.md5(password).hexdigest()}')"
         MySQL(database='User', sql=create_newUser).exe()
         newUserTable = f'''CREATE TABLE {username} (
               Title      varchar(32) NOT NULL,

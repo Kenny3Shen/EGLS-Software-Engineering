@@ -33,8 +33,9 @@ class ResetPwd(QWidget):
         con = MySQL(database='User', sql=f"SELECT Password FROM Userdata WHERE Username = '{self.username}'")
         con.exe()
         pwd = con.getData()
+        # hash(pwd_db + nonce) ?= hash(hash(pwd_in) + nonce)
         if hashlib.md5((str(pwd[0][0]) + str(hex(nonce))).encode()).hexdigest() != currentPwd:
-            QMessageBox.critical(self, 'ERROR', 'Wrong password.')
+            self.ui.nowPwdTips.setText('Wrong password')
             return
         if not re.findall(self.pwd_pattern, newPwd):
             self.ui.pwdTips.setText('The length is between 8 and 15,'

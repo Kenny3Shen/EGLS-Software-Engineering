@@ -62,7 +62,7 @@ class Login:
         rand = random.getrandbits(128)
         self.username = self.ui.username.text().strip()
         t = self.ui.password.text().strip().encode()
-        # md5(md5(password)+random))
+        # md5(md5(password)+nonce))
         self.pwd = hashlib.md5((str(hashlib.md5(t).hexdigest()) + str(hex(rand))).encode()).hexdigest()
         # print(self.pwd)
         con = MySQL(database='User', sql=f"SELECT Password FROM USERDATA WHERE Username = '{self.username}'")

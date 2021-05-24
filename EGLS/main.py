@@ -35,7 +35,7 @@ class MainWindow:
         self.platform = ['DouYu', 'BiliBili', 'AcFun', 'HuYa', 'KuaiShou']
         self.LinkList = [self.DouYu, self.BiliBili, self.AcFun, self.HuYa, self.KuaiShou]
         self.originalURL = ['https://www.douyu.com/', 'https://live.bilibili.com/', 'https://live.acfun.cn/live/',
-                            'https://www.huya.com/', 'https://v.douyin.com/', 'https://live.kuaishou.com/u/']
+                            'https://www.huya.com/', 'https://live.kuaishou.com/u/']
         self.pattern = r'^(.*?)\([a-z]{2,3}line\)$'
         self.URL_List = []
         self.__initIniSettting()
@@ -327,9 +327,9 @@ class MainWindow:
         if not roomInformation:
             QMessageBox.critical(self.ui, 'Warning', 'Invalid Operation')
             return
-        if roomInformation[1] == 4:
-            QMessageBox.warning(self.ui, 'Warning', 'Not support this platform yet')
-            return
+        # if roomInformation[1] == 4:
+        #     QMessageBox.warning(self.ui, 'Warning', 'Not support this platform yet')
+        #     return
         SP.danmuWindow = DanMu(roomInformation[0], self.platform[roomInformation[1]], roomInformation[2])
         SP.danmuWindow.show()
 
