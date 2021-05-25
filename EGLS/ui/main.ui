@@ -382,6 +382,7 @@
     <addaction name="actionAbout_us"/>
     <addaction name="separator"/>
     <addaction name="actionReset_Password"/>
+    <addaction name="separator"/>
     <addaction name="actionUpdate_Log"/>
    </widget>
    <widget class="QMenu" name="menuEdit">
@@ -508,7 +509,7 @@
     <string>Reset Password</string>
    </property>
    <property name="visible">
-    <bool>false</bool>
+    <bool>true</bool>
    </property>
   </action>
   <action name="actionSet_Open_Method">

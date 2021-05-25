@@ -163,10 +163,10 @@ class Ui_Form(object):
 
     def retranslateUi(self, Form):
         Form.setWindowTitle(QCoreApplication.translate("Form", u"Form", None))
-        self.label.setText(QCoreApplication.translate("Form", u"            Register", None))
-        self.label_2.setText(QCoreApplication.translate("Form", u"Username:   ", None))
+        self.label.setText(QCoreApplication.translate("Form", u"           Register", None))
+        self.label_2.setText(QCoreApplication.translate("Form", u"  Username :", None))
         self.usernameTips.setText("")
-        self.label_3.setText(QCoreApplication.translate("Form", u"Password:   ", None))
+        self.label_3.setText(QCoreApplication.translate("Form", u"  Password :", None))
         self.pwdTips.setText("")
         self.label_4.setText(QCoreApplication.translate("Form", u"Re-password:", None))
         self.repwdTips.setText("")

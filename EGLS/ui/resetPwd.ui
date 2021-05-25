@@ -113,7 +113,7 @@
          <item>
           <widget class="QLabel" name="label_3">
            <property name="text">
-            <string>New Password: </string>
+            <string>New Password :</string>
            </property>
           </widget>
          </item>
@@ -142,7 +142,7 @@ font-size:16px</string>
          <item>
           <widget class="QLabel" name="label_4">
            <property name="text">
-            <string>Re-password:  </string>
+            <string> Re-password :</string>
            </property>
           </widget>
          </item>
