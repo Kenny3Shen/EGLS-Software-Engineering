@@ -88,8 +88,11 @@ class MainWindow:
             self.ui.actionSign_in.setText('Sign out')
             self.ui.trueLink.setPlainText(f'Hello, {self.user}!')
             self.ui.actionReset_Password.setVisible(True)
+            # j = 0
             for i in data:
                 self.ui.favorites.addItem(i[0])
+                # self.ui.favorites.item(j).setIcon(QIcon('main.ico'))
+                # j += 1
             Thread(target=self.detect).start()
 
     def __setOpenMethod(self):
@@ -426,6 +429,8 @@ class MainWindow:
 
     def detechItemStatus(self, row, info, append_list=False):
         title, self.pf_index, self.rid, self.quality, ID = info
+        if not append_list:
+            self.quality = 3
         try:
             url = self.getURL(emit=False)
         except:
@@ -610,7 +615,7 @@ class MainWindow:
             return
         self.setRoomID()
         if self.rid == '':
-            QMessageBox.critical(self.ui, 'ERROR', 'Room ID cannot be empty.')
+            QMessageBox.critical(self.ui, 'ERROR', 'Please input the room ID')
             return
         # self.ui.button.setEnabled(False)
         self.setPlatform()
@@ -632,7 +637,8 @@ class MainWindow:
             QMessageBox.warning(self.ui, 'ERROR', 'Illegal URL!')
             return
         else:
-            choice = QMessageBox.question(self.ui, 'Confirm', 'Do you want to open thr current URL with PotPlayer?')
+            choice = QMessageBox.question(self.ui, 'Confirm',
+                                          'Do you want to open the current URL with your media player?')
             if choice == QMessageBox.Yes:
                 with open('TemporaryFile.asx', 'w') as f:
                     f.write('<asx version = "3.0" >')

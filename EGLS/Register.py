@@ -17,12 +17,10 @@ class Register(QWidget):
         self.ui.repwd.textChanged.connect(self.setRePasswordTips)
         self.flag1, self.flag2, self.flag3 = False, False, False
         self.username, self.pwd = '', ''
-        self.username_pattern = r"^[A-za-z0-9_]{5,15}$"
-        # Minimum 5 characters and maximum 15 characters, only digital, English letters and _
-        # 最少5个字符，最多15个字符，仅数字，英文字母和_
+        self.username_pattern = r"^[A-za-z0-9_]{6,12}$"
+        # Minimum 6 characters and maximum 12 characters, only digital, English letters and _
         self.pwd_pattern = r"^(?=.*?[a-z])(?=.*?[0-9]).{8,15}$"
         # Minimum 8 characters and maximum 15 characters, at least one lower case English letter, one digital
-        # 最少8个字符，最多15个字符，至少一个小写英文字母，一个数字
 
     def setUsernameTips(self):
         self.username = self.ui.username.text().strip()
