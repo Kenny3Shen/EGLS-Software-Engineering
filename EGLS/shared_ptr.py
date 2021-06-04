@@ -5,3 +5,4 @@ class SP:
     danmuWindow = None
     registerWindow = None
     resetPwdWindow = None
+    aboutWindow = None

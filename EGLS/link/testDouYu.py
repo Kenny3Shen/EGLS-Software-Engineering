@@ -1,32 +1,28 @@
+# 获取斗鱼直播间的真实流媒体地址，默认最高画质。
 import hashlib
 import re
 import time
+
 import execjs
 import requests
 
 
-# 获取斗鱼和爱奇艺的直播源，需 JavaScript 环境，可使用 node.js。
-
-
 class DouYu:
 
-    def __init__(self, rid, quality):
+    def __init__(self, rid):
         # 房间号通常为1~7位纯数字，浏览器地址栏中看到的房间号不一定是真实rid.
-        self.DY_definition = ['', '4000p', '2000p', '1200p']
         self.did = '10000000000000000000000000001501'
         self.t10 = str(int(time.time()))
         self.t13 = str(int((time.time() * 1000)))
-        self.quality = quality
+
         self.s = requests.Session()
         self.res = self.s.get('https://m.douyu.com/' + str(rid)).text
-        self.rid = self.getRID()
-
-    def getRID(self):
         result = re.search(r'rid":(\d{1,7}),"vipId', self.res)
+
         if result:
-            return result.group(1)
+            self.rid = result.group(1)
         else:
-            return 'Illegal Room ID or not found'
+            raise Exception('房间号错误')
 
     @staticmethod
     def md5(data):
@@ -105,45 +101,20 @@ class DouYu:
 
         return res
 
-    def get_Third_API(self):
-        url = f'https://web.sinsyth.com/lxapi/douyujx.x?roomid={self.rid}'
-        js = requests.get(url).json()
-        if js['state'] == 'SUCCESS':
-            stream = js['Rendata']['link']
-            patten = r'\/([0-9].*?)[_.]'
-            ID = re.search(patten, stream).group(0)
-            if ID[-1] == '.':  # replay
-                trueLink = f'http://tx2play1.douyucdn.cn/live{ID}xs?uuid='
-            elif self.quality == 0:
-                trueLink = f'http://tx2play1.douyucdn.cn/live{ID[:-1]}.xs?uuid='
-            else:
-                trueLink = f'http://tx2play1.douyucdn.cn/live{ID}{self.DY_definition[self.quality]}.xs?uuid='
-            return trueLink
-        elif js['state'] == 'NO':
-            return 'Live is offline'
-        else:
-            return 'Live Stream Not Found'
-
     def get_real_url(self):
-        if self.rid == 'Illegal Room ID or not found':
-            return self.rid
         error, key = self.get_pre()
         if error == 0:
             pass
         elif error == 102:
-            return 'Room not exist'
+            raise Exception('房间不存在')
         elif error == 104:
-            return 'Live is offline'
+            raise Exception('房间未开播')
         else:
             key = self.get_js()
-        if self.quality == 0:
-            trueLink = f"http://tx2play1.douyucdn.cn/live/{key}.xs?uuid="
-        else:
-            trueLink = f"http://tx2play1.douyucdn.cn/live/{key}_{self.DY_definition[self.quality]}.xs?uuid="
-        return trueLink
+        return "http://tx2play1.douyucdn.cn/live/{}.flv?uuid=".format(key)
 
 
 if __name__ == '__main__':
     r = input('输入斗鱼直播间号：\n')
-    s = DouYu(r, 1)
+    s = DouYu(r)
     print(s.get_real_url())

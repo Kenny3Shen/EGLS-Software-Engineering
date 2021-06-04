@@ -89,7 +89,7 @@ class Register(QWidget):
                          f"VALUES ('{username}', '{hashlib.md5(password).hexdigest()}')"
         MySQL(database='User', sql=create_newUser).exe()
         newUserTable = f'''CREATE TABLE {username} (
-              Title      varchar(32) NOT NULL,
+              Title      varchar(32) NOT NULL UNIQUE,
               Platform   tinyint NOT NULL,
               RoomId     varchar(32) NOT NULL,
               Definition tinyint NOT NULL,

@@ -6,3 +6,4 @@ class MySignal(QObject):
     trueLink_update = Signal(str)
     danmu_update = Signal(str)
     itemsStatus = Signal(int, str)
+    trueLinkAppend = Signal(str)

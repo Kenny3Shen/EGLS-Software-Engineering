@@ -97,12 +97,14 @@ class Login:
             SP.mainWindow.ui.actionSign_in.setText('Sign out')
             SP.mainWindow.ui.trueLink.setPlainText(f'Hello, {self.username}!')
             SP.mainWindow.ui.actionReset_Password.setVisible(True)
+            SP.mainWindow.ui.actionImport_Favorites.setVisible(True)
+            SP.mainWindow.ui.actionExport_Favorites.setVisible(True)
             Thread(target=self.loadFavorites).start()
             self.ui.close()
 
     def loadFavorites(self):
         # con = pymysql.connect(host="localhost", user="root", password="123456", database="LiveLink")
-        con = MySQL(database='User', sql=f"SELECT Title FROM {self.username}")
+        con = MySQL(database='User', sql=f"SELECT Title FROM {self.username} ORDER BY id")
         con.exe()
         data = con.getData()
         for i in data:

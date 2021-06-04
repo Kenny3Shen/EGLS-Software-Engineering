@@ -17,13 +17,13 @@ class Ui_Form(object):
     def setupUi(self, Form):
         if not Form.objectName():
             Form.setObjectName(u"Form")
-        Form.resize(296, 800)
-        Form.setMinimumSize(QSize(200, 900))
-        Form.setMaximumSize(QSize(300, 16777215))
+        Form.resize(296, 600)
+        Form.setMinimumSize(QSize(200, 600))
+        Form.setMaximumSize(QSize(320, 16777215))
         Form.setStyleSheet(u"*{\n"
 "                background-color:rgb(53,53,53);\n"
-"                color:rgb(85, 255, 255);\n"
-"                font-size: 16px;\n"
+"                color:rgb(0, 163, 245);\n"
+"                font-size: 15px;\n"
 "                font-family:Consolas, \u5fae\u8f6f\u96c5\u9ed1\n"
 "}\n"
 "\n"

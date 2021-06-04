@@ -1,3 +1,4 @@
+import datetime
 import os
 import re
 import webbrowser
@@ -12,6 +13,8 @@ from DanMu import DanMu
 import Login
 import MySignal
 import resetPwd
+import About
+
 # import PreviewLive
 from EGLS_Backend.backend import MySQL
 from link import DouYuLink, AcFunLink, BiliBiliLink, HuYaLink, KuaiShouLink
@@ -80,7 +83,7 @@ class MainWindow:
         ini = QSettings(".setting.ini", QSettings.IniFormat)
         user = ini.value('Account/Username')
         if user != 'None' and user is not None:
-            con = MySQL(database='User', sql=f"SELECT Title FROM {user}")
+            con = MySQL(database='User', sql=f"SELECT Title FROM {user} ORDER BY id")
             con.exe()
             data = con.getData()
             # con = pymysql.connect(host="localhost", user="root", password="kr20000118", database="UserLink")
@@ -88,6 +91,8 @@ class MainWindow:
             self.ui.actionSign_in.setText('Sign out')
             self.ui.trueLink.setPlainText(f'Hello, {self.user}!')
             self.ui.actionReset_Password.setVisible(True)
+            self.ui.actionImport_Favorites.setVisible(True)
+            self.ui.actionExport_Favorites.setVisible(True)
             # j = 0
             for i in data:
                 self.ui.favorites.addItem(i[0])
@@ -128,6 +133,7 @@ class MainWindow:
         self.MySignal.itemsStatus.connect(self.setItemsText)
         self.MySignal.progress_update.connect(self.setProgressBar)
         self.MySignal.trueLink_update.connect(self.setTrueLink)
+        self.MySignal.trueLinkAppend.connect(self.appendTrueLink)
         # self.ui.deleteFav.clicked.connect(self.delItem)
         # self.ui.sign.clicked.connect(self.signIn)
         self.ui.actionThird_party_API.triggered.connect(self.__setDouyuMethodByThirdAPI)
@@ -136,6 +142,55 @@ class MainWindow:
         self.ui.actionFalse.triggered.connect(self.__setOpenLinkWithDanmuFalse)
         self.ui.actionSet_Open_Method.triggered.connect(self.__setOpenMethod)
         self.ui.actionUpdate_Log.triggered.connect(self.__setUpdateLog)
+        self.ui.actionImport_Favorites.triggered.connect(self.__importFav)
+        self.ui.actionExport_Favorites.triggered.connect(self.__exportFav)
+        self.ui.actionAbout.triggered.connect(self.showAbout)
+        self.ui.actionContact_Us.triggered.connect(
+            lambda: webbrowser.open("https://github.com/Kenny3Shen/EGLS/issues"))
+
+    def __importFav(self):
+        def importF(path):
+            with open(path, 'r') as f:
+                item = f.readlines()
+                for i in item:
+                    li = i.split(':')
+                    t = li[1].split(' ')
+                    try:
+                        sql = f"INSERT INTO {self.user}(Title, Platform, RoomId, Definition) " \
+                              f"VALUES ('{li[0]}', {t[0]}, '{t[1]}', {t[2][0]})"
+                        MySQL(database='User', sql=sql).exe()
+                        self.ui.favorites.insertItem(self.ui.favorites.count(), f'{li[0]}')  # 尾插
+                        self.MySignal.trueLinkAppend.emit(f'Insert "{li[0]}" succeeded')
+                    except:
+                        self.MySignal.trueLinkAppend.emit(
+                            f'<font color="red">Insert "{li[0]}" failed(Title Exist))</font>')
+            self.MySignal.trueLinkAppend.emit("Import completed")
+            self.action_refresh.trigger()
+
+        filePath, _ = QFileDialog.getOpenFileName(
+            self.ui,  # 父窗口对象
+            "Choose the egls file",  # 标题
+            r".",  # 起始目录
+            "Type (*.egls)"  # 选择类型过滤项，过滤内容在括号中
+        )
+        if filePath:
+            self.ui.trueLink.clear()
+            Thread(target=importF, args=(filePath,)).start()
+
+    def __exportFav(self):
+        def export(path):
+            t = datetime.datetime.now().strftime('%Y-%m-%d %H-%M-%S')
+            with open(f'{path}/{self.user} {t}.egls', 'w', encoding='utf-8') as f:
+                con = MySQL(database='User', sql=f"SELECT Title, Platform, RoomId, Definition FROM {self.user}")
+                con.exe()
+                data = con.getData()
+                for i in data:
+                    f.write(f"{i[0]}:{i[1]} {i[2]} {i[3]}\n")
+            self.MySignal.trueLink_update.emit(f'You favorites have been exported to "{path}/{self.user} {t}.egls"')
+
+        filePath = QFileDialog.getExistingDirectory(self.ui, "Choose Storage Path")
+        if filePath:
+            Thread(target=export, args=(filePath,)).start()
 
     def __setOpenLinkWithDanmuTrue(self):
         self.ui.actionFalse.toggle()
@@ -167,6 +222,10 @@ class MainWindow:
 
     def setTrueLink(self, link):
         self.ui.trueLink.setPlainText(link)
+
+    def appendTrueLink(self, s):
+        self.ui.trueLink.append(s)
+        self.ui.trueLink.ensureCursorVisible()
 
     def setRoomID(self):
         self.rid = self.ui.roomID.text()
@@ -325,6 +384,11 @@ class MainWindow:
         url = f'{self.originalURL[pf_Index]}{rid}'
         return url, pf_Index, rid
 
+    @staticmethod
+    def showAbout():
+        SP.aboutWindow = About.About()
+        SP.aboutWindow.show()
+
     def showDanmuWindow(self):
         roomInformation = self.getItemInformation()
         if not roomInformation:
@@ -395,6 +459,8 @@ class MainWindow:
                 self.ui.trueLink.setPlainText("")
                 self.ui.progressBar.setValue(0)
                 self.ui.actionReset_Password.setVisible(False)
+                self.ui.actionImport_Favorites.setVisible(False)
+                self.ui.actionExport_Favorites.setVisible(False)
                 thread = Thread(target=self.clearFavorites)
                 thread.start()
                 # url = 'http://127.0.0.1/api/sign'
@@ -683,7 +749,7 @@ class MainWindow:
 
 
 if __name__ == '__main__':
-    readMe = 'readme'
+    readMe = 'User Brochure'
 
     app = QApplication([])
     app.setStyle('Fusion')

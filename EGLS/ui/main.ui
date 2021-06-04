@@ -367,8 +367,6 @@
      <addaction name="actionFalse"/>
      <addaction name="actionTrue"/>
     </widget>
-    <addaction name="actionSign_in"/>
-    <addaction name="separator"/>
     <addaction name="menuGet_DouyuLink_Method"/>
     <addaction name="separator"/>
     <addaction name="menuOLWD"/>
@@ -377,13 +375,15 @@
     <property name="title">
      <string>Help</string>
     </property>
+    <addaction name="actionSign_in"/>
+    <addaction name="separator"/>
     <addaction name="actionReadMe"/>
     <addaction name="separator"/>
-    <addaction name="actionAbout_us"/>
-    <addaction name="separator"/>
-    <addaction name="actionReset_Password"/>
+    <addaction name="actionAbout"/>
     <addaction name="separator"/>
     <addaction name="actionUpdate_Log"/>
+    <addaction name="separator"/>
+    <addaction name="actionContact_Us"/>
    </widget>
    <widget class="QMenu" name="menuEdit">
     <property name="title">
@@ -392,6 +392,12 @@
     <addaction name="actionSet_KuaiShou_Cookie"/>
     <addaction name="separator"/>
     <addaction name="actionSet_Open_Method"/>
+    <addaction name="separator"/>
+    <addaction name="actionReset_Password"/>
+    <addaction name="separator"/>
+    <addaction name="actionImport_Favorites"/>
+    <addaction name="separator"/>
+    <addaction name="actionExport_Favorites"/>
    </widget>
    <addaction name="menuEdit"/>
    <addaction name="menuAbout"/>
@@ -400,6 +406,9 @@
   <action name="actionReadMe">
    <property name="text">
     <string>Read Me</string>
+   </property>
+   <property name="toolTip">
+    <string>User Brochure</string>
    </property>
    <property name="shortcut">
     <string>Ctrl+R</string>
@@ -410,9 +419,9 @@
     <string>Set KuaiShou Cookie</string>
    </property>
   </action>
-  <action name="actionAbout_us">
+  <action name="actionAbout">
    <property name="text">
-    <string>About us</string>
+    <string>About</string>
    </property>
   </action>
   <action name="actionKeep_Login">
@@ -520,6 +529,21 @@
   <action name="actionUpdate_Log">
    <property name="text">
     <string>Update Log</string>
+   </property>
+  </action>
+  <action name="actionImport_Favorites">
+   <property name="text">
+    <string>Import Favorites</string>
+   </property>
+  </action>
+  <action name="actionExport_Favorites">
+   <property name="text">
+    <string>Export Favorites</string>
+   </property>
+  </action>
+  <action name="actionContact_Us">
+   <property name="text">
+    <string>Contact Us</string>
    </property>
   </action>
  </widget>
