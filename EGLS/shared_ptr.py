@@ -6,3 +6,4 @@ class SP:
     registerWindow = None
     resetPwdWindow = None
     aboutWindow = None
+    analysisWindow = None

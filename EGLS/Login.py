@@ -99,6 +99,7 @@ class Login:
             SP.mainWindow.ui.actionReset_Password.setVisible(True)
             SP.mainWindow.ui.actionImport_Favorites.setVisible(True)
             SP.mainWindow.ui.actionExport_Favorites.setVisible(True)
+            SP.mainWindow.ui.actionAnalyze_Favorites.setVisible(True)
             Thread(target=self.loadFavorites).start()
             self.ui.close()
 

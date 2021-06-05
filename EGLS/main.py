@@ -14,7 +14,7 @@ import Login
 import MySignal
 import resetPwd
 import About
-
+import Analysis
 # import PreviewLive
 from EGLS_Backend.backend import MySQL
 from link import DouYuLink, AcFunLink, BiliBiliLink, HuYaLink, KuaiShouLink
@@ -93,12 +93,15 @@ class MainWindow:
             self.ui.actionReset_Password.setVisible(True)
             self.ui.actionImport_Favorites.setVisible(True)
             self.ui.actionExport_Favorites.setVisible(True)
+            self.ui.actionAnalyze_Favorites.setVisible(True)
             # j = 0
             for i in data:
                 self.ui.favorites.addItem(i[0])
                 # self.ui.favorites.item(j).setIcon(QIcon('main.ico'))
                 # j += 1
             Thread(target=self.detect).start()
+        else:
+            self.ui.trueLink.setPlainText(readMe)
 
     def __setOpenMethod(self):
         with open('set this file.asx', 'w') as f:
@@ -145,8 +148,9 @@ class MainWindow:
         self.ui.actionImport_Favorites.triggered.connect(self.__importFav)
         self.ui.actionExport_Favorites.triggered.connect(self.__exportFav)
         self.ui.actionAbout.triggered.connect(self.showAbout)
+        self.ui.actionAnalyze_Favorites.triggered.connect(self.showAnalysis)
         self.ui.actionContact_Us.triggered.connect(
-            lambda: webbrowser.open("https://github.com/Kenny3Shen/EGLS/issues"))
+            lambda: webbrowser.open("https://github.com/Kenny3Shen/EGLS/issues/new"))
 
     def __importFav(self):
         def importF(path):
@@ -179,7 +183,7 @@ class MainWindow:
 
     def __exportFav(self):
         def export(path):
-            t = datetime.datetime.now().strftime('%Y-%m-%d %H-%M-%S')
+            t = datetime.datetime.now().strftime('%Y%m%d%H%M%S')
             with open(f'{path}/{self.user} {t}.egls', 'w', encoding='utf-8') as f:
                 con = MySQL(database='User', sql=f"SELECT Title, Platform, RoomId, Definition FROM {self.user}")
                 con.exe()
@@ -389,6 +393,10 @@ class MainWindow:
         SP.aboutWindow = About.About()
         SP.aboutWindow.show()
 
+    def showAnalysis(self):
+        SP.analysisWindow = Analysis.Analysis(self.user)
+        SP.analysisWindow.show()
+
     def showDanmuWindow(self):
         roomInformation = self.getItemInformation()
         if not roomInformation:
@@ -461,6 +469,7 @@ class MainWindow:
                 self.ui.actionReset_Password.setVisible(False)
                 self.ui.actionImport_Favorites.setVisible(False)
                 self.ui.actionExport_Favorites.setVisible(False)
+                self.ui.actionAnalyze_Favorites.setVisible(False)
                 thread = Thread(target=self.clearFavorites)
                 thread.start()
                 # url = 'http://127.0.0.1/api/sign'
@@ -749,7 +758,10 @@ class MainWindow:
 
 
 if __name__ == '__main__':
-    readMe = 'User Brochure'
+    readMe = 'This open source project is only used for learning and communication and in the mean while ' \
+             'you must not use it for commercial purposes or purposes other than legally permitted, ' \
+             'otherwise all legal responsibilities are borne by yourself. ' \
+             '(It indicates that you agree to the above statement provided that you continue to use this software)'
 
     app = QApplication([])
     app.setStyle('Fusion')
