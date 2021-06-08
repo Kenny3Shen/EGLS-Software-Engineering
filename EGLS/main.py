@@ -334,7 +334,7 @@ class MainWindow:
                       sql=f"UPDATE {self.user} SET Title = '{new}' WHERE title = '{old}'")
             c.exe()
             url = self.getURL(emit=False)
-            if 'http://' in url or 'https://' in url:
+            if re.findall(r'^https?://', url):
                 self.MySignal.itemsStatus.emit(self.ui.favorites.currentRow(), f"{new}(online)", True)
             else:
                 self.MySignal.itemsStatus.emit(self.ui.favorites.currentRow(), f"{new}(offline)", False)
@@ -514,7 +514,7 @@ class MainWindow:
         except:
             self.MySignal.itemsStatus.emit(row, f"{title}(offline)", False)
         else:
-            if 'http://' not in url and 'https://' not in url:
+            if not re.findall(r'^https?://', url):
                 self.MySignal.itemsStatus.emit(row, f"{title}(offline)", False)
             else:
                 self.MySignal.itemsStatus.emit(row, f"{title}(online)", True)
@@ -543,7 +543,7 @@ class MainWindow:
         if needchange[0]:
             self.quality = needchange[1]
         url = self.getURL()
-        if 'http://' in url or 'https://' in url:
+        if re.findall(r'^https?://', url):
             self.MySignal.itemsStatus.emit(self.ui.favorites.currentRow(), f"{title}(online)", True)
             with open('TemporaryFile.asx', 'w') as f:
                 f.write('<asx version = "3.0" >')
@@ -613,7 +613,7 @@ class MainWindow:
                     MySQL(database='User', sql=sql).exe()
                     self.ui.favorites.insertItem(self.ui.favorites.count(), f'{title}')  # 尾插
                     url = self.getURL()
-                    if 'http://' in url or 'https://' in url:
+                    if re.findall(r'^https?://', url):
                         self.MySignal.itemsStatus.emit(self.ui.favorites.count() - 1, f"{title}(online)", True)
                     else:
                         self.MySignal.itemsStatus.emit(self.ui.favorites.count() - 1, f"{title}(offline)", False)
@@ -674,7 +674,7 @@ class MainWindow:
             f.write('<asx version = "3.0" >\n')
             for title, url, _ in self.URL_List:
                 try:
-                    if 'http://' in url or 'https://' in url:
+                    if re.findall(r'^https?://', url):
                         self.MySignal.itemsStatus.emit(count % self.ui.favorites.count(), f"{title}(online)", True)
                         f.write(f'<entry><title>{title}</title><ref href = "{url}"/></entry>\n')
                     else:
@@ -711,7 +711,7 @@ class MainWindow:
         if url == '':
             QMessageBox.warning(self.ui, 'ERROR', 'URL cannot be empty!')
             return
-        elif 'http://' not in url and 'https://' not in url:
+        elif not re.findall(r'^https?://', url):
             QMessageBox.warning(self.ui, 'ERROR', 'Illegal URL!')
             return
         else:

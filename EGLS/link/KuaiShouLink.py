@@ -48,5 +48,5 @@ def get_real_url(rid, q):
 
 if __name__ == '__main__':
     # KPL704668133
-    r = 'pubg98k416'
+    r = 'hxm666666'
     print(get_real_url(r, 0))
