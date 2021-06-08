@@ -5,7 +5,7 @@ import webbrowser
 from threading import Thread
 
 from PySide2.QtCore import QFile, QSettings
-from PySide2.QtGui import QIcon, QCursor
+from PySide2.QtGui import QIcon, QCursor, QColor
 from PySide2.QtUiTools import QUiLoader
 from PySide2.QtWidgets import QApplication, QMessageBox, QInputDialog, QLineEdit, QMenu, QFileDialog
 
@@ -184,13 +184,13 @@ class MainWindow:
     def __exportFav(self):
         def export(path):
             t = datetime.datetime.now().strftime('%Y%m%d%H%M%S')
-            with open(f'{path}/{self.user} {t}.egls', 'w', encoding='utf-8') as f:
+            with open(f'{path}/{self.user}{t}.egls', 'w', encoding='utf-8') as f:
                 con = MySQL(database='User', sql=f"SELECT Title, Platform, RoomId, Definition FROM {self.user}")
                 con.exe()
                 data = con.getData()
                 for i in data:
                     f.write(f"{i[0]}:{i[1]} {i[2]} {i[3]}\n")
-            self.MySignal.trueLink_update.emit(f'You favorites have been exported to "{path}/{self.user} {t}.egls"')
+            self.MySignal.trueLink_update.emit(f'You favorites have been exported to "{path}/{self.user}{t}.egls"')
 
         filePath = QFileDialog.getExistingDirectory(self.ui, "Choose Storage Path")
         if filePath:
@@ -253,8 +253,12 @@ class MainWindow:
     def setQuality(self):
         self.quality = self.ui.definite.currentIndex()
 
-    def setItemsText(self, row, status):
+    def setItemsText(self, row, status, flag=False):
         self.ui.favorites.item(row).setText(status)
+        if flag:
+            self.ui.favorites.item(row).setForeground((QColor('#55aaff')))
+        else:
+            self.ui.favorites.item(row).setForeground((QColor('#ffffff')))
 
     def resetPassword(self):
         SP.resetPwdWindow = resetPwd.ResetPwd(self.user)
@@ -331,10 +335,9 @@ class MainWindow:
             c.exe()
             url = self.getURL(emit=False)
             if 'http://' in url or 'https://' in url:
-                new = f"{new}(online)"
+                self.MySignal.itemsStatus.emit(self.ui.favorites.currentRow(), f"{new}(online)", True)
             else:
-                new = f"{new}(offline)"
-            self.MySignal.itemsStatus.emit(self.ui.favorites.currentRow(), new)
+                self.MySignal.itemsStatus.emit(self.ui.favorites.currentRow(), f"{new}(offline)", False)
 
         oldTitle = re.findall(self.pattern, self.ui.favorites.currentItem().text())[0]
         while True:
@@ -509,12 +512,12 @@ class MainWindow:
         try:
             url = self.getURL(emit=False)
         except:
-            self.MySignal.itemsStatus.emit(row, f"{title}(offline)")
+            self.MySignal.itemsStatus.emit(row, f"{title}(offline)", False)
         else:
             if 'http://' not in url and 'https://' not in url:
-                self.MySignal.itemsStatus.emit(row, f"{title}(offline)")
+                self.MySignal.itemsStatus.emit(row, f"{title}(offline)", False)
             else:
-                self.MySignal.itemsStatus.emit(row, f"{title}(online)")
+                self.MySignal.itemsStatus.emit(row, f"{title}(online)", True)
             if append_list:
                 self.URL_List.append((title, url, ID))
 
@@ -541,7 +544,7 @@ class MainWindow:
             self.quality = needchange[1]
         url = self.getURL()
         if 'http://' in url or 'https://' in url:
-            self.MySignal.itemsStatus.emit(self.ui.favorites.currentRow(), f"{title}(online)")
+            self.MySignal.itemsStatus.emit(self.ui.favorites.currentRow(), f"{title}(online)", True)
             with open('TemporaryFile.asx', 'w') as f:
                 f.write('<asx version = "3.0" >')
                 f.write(f'<entry><title>{title}</title><ref href = "{url}"/></entry>')
@@ -550,7 +553,7 @@ class MainWindow:
                 self.action_getDanmu.trigger()
             #  self.progressSignal.trueLink_update.emit(f"Opening \"{title}\"")
         else:
-            self.MySignal.itemsStatus.emit(self.ui.favorites.currentRow(), f"{title}(offline)")
+            self.MySignal.itemsStatus.emit(self.ui.favorites.currentRow(), f"{title}(offline)", False)
             self.MySignal.trueLink_update.emit(f"\"{title}\" is offline({url})")
 
     def delItem(self):
@@ -611,9 +614,9 @@ class MainWindow:
                     self.ui.favorites.insertItem(self.ui.favorites.count(), f'{title}')  # 尾插
                     url = self.getURL()
                     if 'http://' in url or 'https://' in url:
-                        self.MySignal.itemsStatus.emit(self.ui.favorites.count() - 1, f"{title}(online)")
+                        self.MySignal.itemsStatus.emit(self.ui.favorites.count() - 1, f"{title}(online)", True)
                     else:
-                        self.MySignal.itemsStatus.emit(self.ui.favorites.count() - 1, f"{title}(offline)")
+                        self.MySignal.itemsStatus.emit(self.ui.favorites.count() - 1, f"{title}(offline)", False)
                     # self.ui.favorites.addItem(f'{title}') # 头插
                     break
             else:
@@ -672,10 +675,10 @@ class MainWindow:
             for title, url, _ in self.URL_List:
                 try:
                     if 'http://' in url or 'https://' in url:
-                        self.MySignal.itemsStatus.emit(count % self.ui.favorites.count(), f"{title}(online)")
+                        self.MySignal.itemsStatus.emit(count % self.ui.favorites.count(), f"{title}(online)", True)
                         f.write(f'<entry><title>{title}</title><ref href = "{url}"/></entry>\n')
                     else:
-                        self.MySignal.itemsStatus.emit(count % self.ui.favorites.count(), f"{title}(offline)")
+                        self.MySignal.itemsStatus.emit(count % self.ui.favorites.count(), f"{title}(offline)", False)
                 except IOError:
                     pass
                 count += 1
