@@ -173,7 +173,7 @@
     </font>
    </property>
    <property name="text">
-    <string>Developing environment: Windows 10 21H1 &amp; Bulit on 4/6/2021</string>
+    <string>Developing environment: Windows 10 21H1 &amp; Bulit on 8/6/2021</string>
    </property>
   </widget>
   <widget class="QLabel" name="label_8">

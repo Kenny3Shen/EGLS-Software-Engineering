@@ -39,13 +39,13 @@
                 font-size: 17px;
                 }
                 QMenu::item:selected{
-                background-color:rgb(0, 135, 203);
+                background-color:rgb(80, 80, 80);
                 }
                 QComboBox::item:selected{
-                background-color:rgb(0, 135, 203);
+                background-color:rgb(80, 80, 80);
                 }
                 QListWidget::item:selected{
-                background-color:rgb(0, 135, 203);
+                background-color:rgb(80, 80, 80);
                 }
                 QPushButton:hover{
                 border:1px solid rgb(255, 255, 255);

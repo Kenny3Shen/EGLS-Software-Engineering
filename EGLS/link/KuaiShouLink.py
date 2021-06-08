@@ -42,7 +42,7 @@ def get_real_url(rid, q):
         ks = KuaiShou(rid, q)
         return ks.get_real_url()
     except Exception as e:
-        print('Exception：', e)
+        print(f'{e}：请尝试更换cookie')
         return False
 
 

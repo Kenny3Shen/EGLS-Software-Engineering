@@ -94,7 +94,7 @@ class Ui_Form(object):
         self.label_4.setText(QCoreApplication.translate("Form", u"Copyright\u00a9 2021 Kenny3Shen(1815200045)", None))
         self.label_5.setText(QCoreApplication.translate("Form", u"Powered by JetBrains PyCharm 2021.1.2 (Community Editon)", None))
         self.label_6.setText(QCoreApplication.translate("Form", u"GUI powered by PySide2 & Qt Designer", None))
-        self.label_7.setText(QCoreApplication.translate("Form", u"Developing environment: Windows 10 21H1 & Bulit on 4/6/2021", None))
+        self.label_7.setText(QCoreApplication.translate("Form", u"Developing environment: Windows 10 21H1 & Bulit on 8/6/2021", None))
         self.label_8.setText(QCoreApplication.translate("Form", u"This is\n"
 "an ICON", None))
         self.label_9.setText(QCoreApplication.translate("Form", u"Database and backend powered by MySQL & Django", None))

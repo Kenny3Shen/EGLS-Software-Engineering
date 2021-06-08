@@ -41,5 +41,5 @@ class DanMu(QWidget):
         try:
             await dmc.start()
         except Exception as e:
-            self.MySignal.danmu_update.emit(str(e))
+            self.MySignal.danmu_update.emit(f'{str(e)}，请稍后再试或尝试更换cookie（快手平台）。')
             await dmc.stop()
