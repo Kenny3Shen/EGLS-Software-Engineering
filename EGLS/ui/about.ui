@@ -6,19 +6,19 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>600</width>
+    <width>700</width>
     <height>350</height>
    </rect>
   </property>
   <property name="minimumSize">
    <size>
-    <width>600</width>
+    <width>700</width>
     <height>350</height>
    </size>
   </property>
   <property name="maximumSize">
    <size>
-    <width>600</width>
+    <width>700</width>
     <height>350</height>
    </size>
   </property>
@@ -33,8 +33,8 @@
   </property>
   <property name="styleSheet">
    <string notr="true">*{
-                background-color:rgb(53,53,53);
-                color: rgb(255,255,255);
+                background-color:rgb(255,255,255);
+                color: rgb(0,0,0);
                 font-family:Consolas, 微软雅黑
 }
 			
@@ -45,7 +45,7 @@
     <rect>
      <x>20</x>
      <y>10</y>
-     <width>471</width>
+     <width>671</width>
      <height>41</height>
     </rect>
    </property>
@@ -64,7 +64,7 @@
     <rect>
      <x>20</x>
      <y>70</y>
-     <width>571</width>
+     <width>671</width>
      <height>31</height>
     </rect>
    </property>
@@ -83,7 +83,7 @@
     <rect>
      <x>20</x>
      <y>120</y>
-     <width>551</width>
+     <width>671</width>
      <height>21</height>
     </rect>
    </property>
@@ -105,7 +105,7 @@
     <rect>
      <x>20</x>
      <y>320</y>
-     <width>271</width>
+     <width>441</width>
      <height>16</height>
     </rect>
    </property>
@@ -124,7 +124,7 @@
     <rect>
      <x>20</x>
      <y>200</y>
-     <width>511</width>
+     <width>681</width>
      <height>21</height>
     </rect>
    </property>
@@ -143,7 +143,7 @@
     <rect>
      <x>20</x>
      <y>240</y>
-     <width>331</width>
+     <width>671</width>
      <height>21</height>
     </rect>
    </property>
@@ -162,7 +162,7 @@
     <rect>
      <x>20</x>
      <y>160</y>
-     <width>531</width>
+     <width>681</width>
      <height>21</height>
     </rect>
    </property>
@@ -179,9 +179,9 @@
   <widget class="QLabel" name="label_8">
    <property name="geometry">
     <rect>
-     <x>510</x>
-     <y>280</y>
-     <width>51</width>
+     <x>620</x>
+     <y>290</y>
+     <width>71</width>
      <height>51</height>
     </rect>
    </property>
@@ -201,7 +201,7 @@ an ICON</string>
     <rect>
      <x>20</x>
      <y>280</y>
-     <width>421</width>
+     <width>591</width>
      <height>21</height>
     </rect>
    </property>

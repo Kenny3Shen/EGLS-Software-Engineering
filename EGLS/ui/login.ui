@@ -27,22 +27,46 @@
   </property>
   <property name="styleSheet">
    <string notr="true">*{
-                background-color:rgb(53,53,53);
-                color: rgb(255,255,255);
+                background-color:rgb(255,255,255);
+                color: rgb(0,0,0);
                 font-size: 15px;
                 font-family:Consolas, 微软雅黑
                 }
-                QLineEdit{
-                border:2px solid rgb(255, 255, 255);
+                #roomID{
+                border:1px solid rgb(170, 170, 170);
+                }
+                QMenu{
+                border:.5px solid rgb(150, 150, 150);
+                }
+                #trueLink{
+                font-size: 17px;
+				border:1px solid rgb(0,0, 0);
+                }
+                #favorites{
+                font-size: 17px;
                 }
                 QMenu::item:selected{
-                background-color:rgb(0, 135, 203);
+                background-color:rgb(38, 117, 191);
+                }
+                QComboBox::item:selected{
+                background-color:rgb(38, 117, 191);
+                }
+                QListWidget::item:selected{
+                background-color:rgb(38, 117, 191);
                 }
                 QPushButton:hover{
-                border:1px solid rgb(255, 255, 255);
+                border:1px solid rgb(0,0, 0);
                 }
-                QCheckBox:checked {
-                color: red
+                #trueLink{
+                border:1px solid rgb(0,0, 0);
+                }
+                QListWidget{
+                border:1px solid rgb(0,0, 0);
+                }
+                #menubar{
+                border-bottom:.5px solid rgb(242, 242, 242);
+				
+	background-color:rgb(242, 242, 242);
                 }
             </string>
   </property>

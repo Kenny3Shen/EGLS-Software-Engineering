@@ -7,3 +7,4 @@ class SP:
     resetPwdWindow = None
     aboutWindow = None
     analysisWindow = None
+    delWindow = None

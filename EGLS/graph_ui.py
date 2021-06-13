@@ -21,7 +21,7 @@ class Ui_Form(object):
         Form.setMinimumSize(QSize(650, 500))
         Form.setMaximumSize(QSize(650, 500))
         Form.setStyleSheet(u"*{\n"
-"                background-color:rgb(53,53,53);\n"
+"                background-color:rgb(0,0,0);\n"
 "                color: rgb(255,255,255);\n"
 "                font-size: 15px;\n"
 "                font-family:Consolas, \u5fae\u8f6f\u96c5\u9ed1\n"

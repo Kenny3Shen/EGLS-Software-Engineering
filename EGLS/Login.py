@@ -25,7 +25,7 @@ class Login:
         self.ui.password.returnPressed.connect(self.sign_in)
 
     @staticmethod
-    def showRegister(self):
+    def showRegister():
         SP.registerWindow = Register.Register()
         SP.registerWindow.show()
 
@@ -100,6 +100,7 @@ class Login:
             SP.mainWindow.ui.actionImport_Favorites.setVisible(True)
             SP.mainWindow.ui.actionExport_Favorites.setVisible(True)
             SP.mainWindow.ui.actionAnalyze_Favorites.setVisible(True)
+            SP.mainWindow.ui.actionDelete_Account.setVisible(True)
             Thread(target=self.loadFavorites).start()
             self.ui.close()
 

@@ -21,9 +21,9 @@
   </property>
   <property name="styleSheet">
    <string notr="true">*{
-                background-color:rgb(53,53,53);
-                color: rgb(255,255,255);
-                font-size: 15px;
+                background-color:rgb(255,255,255);
+                color: rgb(0,0,0);
+                font-size: 16px;
                 font-family:Consolas, 微软雅黑
                 }
                 #roomID{
@@ -33,33 +33,34 @@
                 border:.5px solid rgb(150, 150, 150);
                 }
                 #trueLink{
-                font-size: 17px;
+                font-size: 20px;
+				border:1px solid rgb(0,0, 0);
                 }
                 #favorites{
-                font-size: 17px;
+                font-size: 20px;
                 }
                 QMenu::item:selected{
-                background-color:rgb(80, 80, 80);
+                background-color:rgb(38, 117, 191);
                 }
                 QComboBox::item:selected{
-                background-color:rgb(80, 80, 80);
+                background-color:rgb(38, 117, 191);
                 }
                 QListWidget::item:selected{
-                background-color:rgb(80, 80, 80);
+                background-color:rgb(38, 117, 191);
                 }
                 QPushButton:hover{
-                border:1px solid rgb(255, 255, 255);
+                border:1px solid rgb(0,0, 0);
                 }
                 #trueLink{
-                border:1px solid rgb(0, 0, 0);
+                border:1px solid rgb(0,0, 0);
                 }
                 QListWidget{
-                border:1px solid rgb(0, 0, 0);
+                border:1px solid rgb(0,0, 0);
                 }
                 #menubar{
-                border-bottom:.5px solid rgb(150, 150, 150);
+                border-bottom:.5px solid rgb(242, 242, 242);
 				
-	background-color:rgb(29, 29, 29);
+	background-color:rgb(242, 242, 242);
                 }
             </string>
   </property>
@@ -110,6 +111,13 @@
            </widget>
           </item>
          </layout>
+        </item>
+        <item>
+         <widget class="Line" name="line_2">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+         </widget>
         </item>
         <item>
          <layout class="QHBoxLayout" name="horizontalLayout_3">
@@ -346,7 +354,7 @@
      <x>0</x>
      <y>0</y>
      <width>897</width>
-     <height>26</height>
+     <height>27</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuAbout">
@@ -386,6 +394,8 @@
     <addaction name="actionUpdate_Log"/>
     <addaction name="separator"/>
     <addaction name="actionContact_Us"/>
+    <addaction name="separator"/>
+    <addaction name="actionDelete_Account"/>
    </widget>
    <widget class="QMenu" name="menuEdit">
     <property name="title">
@@ -504,7 +514,7 @@
     <bool>true</bool>
    </property>
    <property name="text">
-    <string>True</string>
+    <string>Yes</string>
    </property>
   </action>
   <action name="actionFalse">
@@ -512,7 +522,7 @@
     <bool>true</bool>
    </property>
    <property name="text">
-    <string>False</string>
+    <string>No</string>
    </property>
   </action>
   <action name="actionReset_Password">
@@ -520,7 +530,7 @@
     <string>Reset Password</string>
    </property>
    <property name="visible">
-    <bool>true</bool>
+    <bool>false</bool>
    </property>
   </action>
   <action name="actionSet_Open_Method">
@@ -537,10 +547,16 @@
    <property name="text">
     <string>Import Favorites</string>
    </property>
+   <property name="visible">
+    <bool>false</bool>
+   </property>
   </action>
   <action name="actionExport_Favorites">
    <property name="text">
     <string>Export Favorites</string>
+   </property>
+   <property name="visible">
+    <bool>false</bool>
    </property>
   </action>
   <action name="actionContact_Us">
@@ -551,6 +567,14 @@
   <action name="actionAnalyze_Favorites">
    <property name="text">
     <string>Analyze Favorites</string>
+   </property>
+   <property name="visible">
+    <bool>false</bool>
+   </property>
+  </action>
+  <action name="actionDelete_Account">
+   <property name="text">
+    <string>Delete Account</string>
    </property>
    <property name="visible">
     <bool>false</bool>

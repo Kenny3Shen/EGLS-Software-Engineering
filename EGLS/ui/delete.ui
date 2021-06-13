@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Form</class>
+ <widget class="QWidget" name="Form">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>500</width>
+    <height>300</height>
+   </rect>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>500</width>
+    <height>300</height>
+   </size>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>500</width>
+    <height>300</height>
+   </size>
+  </property>
+  <property name="windowTitle">
+   <string>Are you absolutely sure?</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">*{
+                background-color:rgb(255,255,255);
+                color: rgb(0,0,0);
+                font-size: 15px;
+                font-family:Consolas, 微软雅黑
+                }
+                #roomID{
+                border:1px solid rgb(170, 170, 170);
+                }
+                QMenu{
+                border:.5px solid rgb(150, 150, 150);
+                }
+                #trueLink{
+                font-size: 17px;
+				border:1px solid rgb(0,0, 0);
+                }
+                #favorites{
+                font-size: 17px;
+                }
+                QMenu::item:selected{
+                background-color:rgb(38, 117, 191);
+                }
+                QComboBox::item:selected{
+                background-color:rgb(38, 117, 191);
+                }
+                QListWidget::item:selected{
+                background-color:rgb(38, 117, 191);
+                }
+                QPushButton:hover{
+                border:1px solid rgb(0,0, 0);
+                }
+                #trueLink{
+                border:1px solid rgb(0,0, 0);
+                }
+                QListWidget{
+                border:1px solid rgb(0,0, 0);
+                }
+                #menubar{
+                border-bottom:.5px solid rgb(242, 242, 242);
+				
+	background-color:rgb(242, 242, 242);
+                }
+            </string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout_2">
+   <item>
+    <layout class="QVBoxLayout" name="verticalLayout" stretch="2,1,1,1,1">
+     <item>
+      <widget class="QLabel" name="label_3">
+       <property name="text">
+        <string>This action cannot be undone. This will permanently delete
+your account and remove all your data.
+
+Please input your password first.</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout">
+       <item>
+        <widget class="QLabel" name="label">
+         <property name="text">
+          <string>Password:</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLineEdit" name="pwd">
+         <property name="echoMode">
+          <enum>QLineEdit::Password</enum>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+     <item>
+      <widget class="QLabel" name="label_2">
+       <property name="text">
+        <string>Type &lt;b&gt;I want to delete my account&lt;/b&gt; to confirm.</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLineEdit" name="confirm"/>
+     </item>
+     <item>
+      <widget class="QPushButton" name="submit">
+       <property name="enabled">
+        <bool>false</bool>
+       </property>
+       <property name="text">
+        <string>I understand the consequence, delete this account</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

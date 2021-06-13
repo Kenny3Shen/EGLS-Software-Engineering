@@ -15,6 +15,7 @@ import MySignal
 import resetPwd
 import About
 import Analysis
+import delAccount
 # import PreviewLive
 from EGLS_Backend.backend import MySQL
 from link import DouYuLink, AcFunLink, BiliBiliLink, HuYaLink, KuaiShouLink
@@ -58,10 +59,10 @@ class MainWindow:
             ini.setValue('Account/Username', 'None')
             ini.setValue('Account/Password', '')
             ini.setValue('Kuaishou_cookies/KS_Cookies', 'did=web_e9f23e35be2c6eefde872a9296d7a4fa')
-            ini.setValue('DouyuLinkMethod/Method', '1')
+            ini.setValue('DouyuLinkMethod/Method', '0')
             ini.setValue('OpenLinkWithDanmu/Choose', '1')
             self.ui.actionTrue.toggle()
-            self.ui.actionOriginal_API.toggle()
+            self.ui.actionThird_party_API.toggle()
             if QMessageBox.question(self.ui, 'Confirm',
                                     'We found that you are using this software for the first time and therefore '
                                     'we recommend you to set the opening method of the .asx file to Potplayer '
@@ -94,6 +95,8 @@ class MainWindow:
             self.ui.actionImport_Favorites.setVisible(True)
             self.ui.actionExport_Favorites.setVisible(True)
             self.ui.actionAnalyze_Favorites.setVisible(True)
+            self.ui.actionDelete_Account.setVisible(True)
+
             # j = 0
             for i in data:
                 self.ui.favorites.addItem(i[0])
@@ -148,6 +151,7 @@ class MainWindow:
         self.ui.actionImport_Favorites.triggered.connect(self.__importFav)
         self.ui.actionExport_Favorites.triggered.connect(self.__exportFav)
         self.ui.actionAbout.triggered.connect(self.showAbout)
+        self.ui.actionDelete_Account.triggered.connect(self.delAccount)
         self.ui.actionAnalyze_Favorites.triggered.connect(self.showAnalysis)
         self.ui.actionContact_Us.triggered.connect(
             lambda: webbrowser.open("https://github.com/Kenny3Shen/EGLS/issues/new"))
@@ -256,9 +260,9 @@ class MainWindow:
     def setItemsText(self, row, status, flag=False):
         self.ui.favorites.item(row).setText(status)
         if flag:
-            self.ui.favorites.item(row).setForeground((QColor('#55aaff')))
+            self.ui.favorites.item(row).setForeground((QColor('#00aaff')))
         else:
-            self.ui.favorites.item(row).setForeground((QColor('#ffffff')))
+            self.ui.favorites.item(row).setForeground((QColor('#000000')))
 
     def resetPassword(self):
         SP.resetPwdWindow = resetPwd.ResetPwd(self.user)
@@ -372,7 +376,7 @@ class MainWindow:
             return
         # self.ui.trueLink.setOpenExternalLinks(True)
         # self.ui.trueLink.append(f"<a href='{OringinalUrl}'>{OringinalUrl}</a>")
-        self.MySignal.trueLink_update.emit(OringinalUrl)
+        # self.MySignal.trueLink_update.emit(OringinalUrl)
         webbrowser.open(OringinalUrl)
 
     def getItemInformation(self):
@@ -391,12 +395,17 @@ class MainWindow:
         url = f'{self.originalURL[pf_Index]}{rid}'
         return url, pf_Index, rid
 
+    def delAccount(self):
+        SP.delWindow = delAccount.DelAcc(self.user)
+        SP.delWindow.show()
+
     @staticmethod
     def showAbout():
         SP.aboutWindow = About.About()
         SP.aboutWindow.show()
 
     def showAnalysis(self):
+        # pass
         SP.analysisWindow = Analysis.Analysis(self.user)
         SP.analysisWindow.show()
 
@@ -473,6 +482,7 @@ class MainWindow:
                 self.ui.actionImport_Favorites.setVisible(False)
                 self.ui.actionExport_Favorites.setVisible(False)
                 self.ui.actionAnalyze_Favorites.setVisible(False)
+                self.ui.actionDelete_Account.setVisible(False)
                 thread = Thread(target=self.clearFavorites)
                 thread.start()
                 # url = 'http://127.0.0.1/api/sign'
@@ -776,3 +786,66 @@ if __name__ == '__main__':
         os.remove('TemporaryFile.asx')
     if os.path.exists('set this file.asx'):
         os.remove('set this file.asx')
+
+# *{
+#     background - color: rgb(53, 53, 53);
+# color: rgb(255, 255, 255);
+# font - size: 15
+# px;
+# font - family: Consolas, 微软雅黑
+# }
+# # roomID{
+# border: 1
+# px
+# solid
+# rgb(170, 170, 170);
+# }
+# QMenu
+# {
+# border: .5
+# px
+# solid
+# rgb(150, 150, 150);
+# }
+# # trueLink{
+# font - size: 17
+# px;
+# }
+# # favorites{
+# font - size: 17
+# px;
+# }
+# QMenu::item: selected
+# {
+#     background - color: rgb(80, 80, 80);
+# }
+# QComboBox::item: selected
+# {
+#     background - color: rgb(80, 80, 80);
+# }
+# QListWidget::item: selected
+# {
+#     background - color: rgb(80, 80, 80);
+# }
+# QPushButton: hover
+# {
+#     border: 1px solid rgb(255, 255, 255);
+# }
+# # trueLink{
+# border: 1
+# px
+# solid
+# rgb(0, 0, 0);
+# }
+# QListWidget
+# {
+#     border: 1px solid rgb(0, 0, 0);
+# }
+# # menubar{
+# border - bottom: .5
+# px
+# solid
+# rgb(150, 150, 150);
+#
+# background - color: rgb(29, 29, 29);
+# }
