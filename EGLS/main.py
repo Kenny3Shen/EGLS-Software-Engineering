@@ -14,7 +14,7 @@ import Login
 import MySignal
 import resetPwd
 import About
-import Analysis
+# import Analysis
 import delAccount
 # import PreviewLive
 from EGLS_Backend.backend import MySQL
@@ -152,7 +152,7 @@ class MainWindow:
         self.ui.actionExport_Favorites.triggered.connect(self.__exportFav)
         self.ui.actionAbout.triggered.connect(self.showAbout)
         self.ui.actionDelete_Account.triggered.connect(self.delAccount)
-        self.ui.actionAnalyze_Favorites.triggered.connect(self.showAnalysis)
+        # self.ui.actionAnalyze_Favorites.triggered.connect(self.showAnalysis)
         self.ui.actionContact_Us.triggered.connect(
             lambda: webbrowser.open("https://github.com/Kenny3Shen/EGLS/issues/new"))
 
@@ -404,10 +404,10 @@ class MainWindow:
         SP.aboutWindow = About.About()
         SP.aboutWindow.show()
 
-    def showAnalysis(self):
-        # pass
-        SP.analysisWindow = Analysis.Analysis(self.user)
-        SP.analysisWindow.show()
+    # def showAnalysis(self):
+    #     # pass
+    #     SP.analysisWindow = Analysis.Analysis(self.user)
+    #     SP.analysisWindow.show()
 
     def showDanmuWindow(self):
         roomInformation = self.getItemInformation()
