@@ -135,7 +135,8 @@ class DouYu:
         elif error == 104:
             return 'Live is offline'
         else:
-            key = self.get_js()
+            None
+            # key = self.get_js()
         if self.quality == 0:
             trueLink = f"http://tx2play1.douyucdn.cn/live/{key}.xs?uuid="
         else:
@@ -146,4 +147,4 @@ class DouYu:
 if __name__ == '__main__':
     r = input('输入斗鱼直播间号：\n')
     s = DouYu(r, 1)
-    print(s.get_real_url())
+    print(s.get_Third_API())
